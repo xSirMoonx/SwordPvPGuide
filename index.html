@@ -1,0 +1,2501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>⚔️ 1.9 Sword PvP Guide — xYuvalx</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --bg2: #111118;
+    --bg3: #1a1a24;
+    --red: #e03030;
+    --red2: #ff5555;
+    --gold: #f5c842;
+    --blue: #4a9eff;
+    --orange: #ff8c42;
+    --green: #42ff8c;
+    --purple: #9b6dff;
+    --text: #e8e8f0;
+    --text2: #a0a0b8;
+    --border: #2a2a3a;
+    --card: #13131e;
+    --glow-red: 0 0 20px rgba(224,48,48,0.4);
+    --glow-gold: 0 0 20px rgba(245,200,66,0.4);
+    --glow-blue: 0 0 20px rgba(74,158,255,0.4);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* Scanline overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.03) 2px, rgba(0,0,0,0.03) 4px);
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  /* ===== NAVBAR ===== */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 1000;
+    background: rgba(10,10,15,0.95);
+    border-bottom: 2px solid var(--red);
+    backdrop-filter: blur(10px);
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    height: 56px;
+    gap: 0;
+  }
+
+  .nav-logo {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 10px;
+    color: var(--red);
+    text-shadow: var(--glow-red);
+    white-space: nowrap;
+    margin-right: 2rem;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+    flex: 1;
+  }
+  .nav-links::-webkit-scrollbar { display: none; }
+
+  .nav-links a {
+    color: var(--text2);
+    text-decoration: none;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    padding: 0 0.75rem;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s;
+    white-space: nowrap;
+    text-transform: uppercase;
+  }
+  .nav-links a:hover {
+    color: var(--gold);
+    border-bottom-color: var(--gold);
+  }
+
+  /* ===== HERO ===== */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    padding: 80px 2rem 4rem;
+    text-align: center;
+  }
+
+  .hero-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(224,48,48,0.07) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(224,48,48,0.07) 1px, transparent 1px);
+    background-size: 40px 40px;
+    animation: gridScroll 20s linear infinite;
+  }
+
+  @keyframes gridScroll {
+    0% { background-position: 0 0; }
+    100% { background-position: 40px 40px; }
+  }
+
+  .hero-glow {
+    position: absolute;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(224,48,48,0.15) 0%, transparent 70%);
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+
+  .hero-title {
+    font-family: 'Press Start 2P', monospace;
+    font-size: clamp(18px, 4vw, 42px);
+    color: var(--red);
+    text-shadow: 0 0 40px rgba(224,48,48,0.8), 0 0 80px rgba(224,48,48,0.4);
+    line-height: 1.4;
+    position: relative;
+    z-index: 1;
+    animation: titlePulse 3s ease-in-out infinite;
+  }
+
+  @keyframes titlePulse {
+    0%, 100% { text-shadow: 0 0 40px rgba(224,48,48,0.8), 0 0 80px rgba(224,48,48,0.4); }
+    50% { text-shadow: 0 0 60px rgba(224,48,48,1), 0 0 120px rgba(224,48,48,0.6); }
+  }
+
+  .hero-sub {
+    font-family: 'Press Start 2P', monospace;
+    font-size: clamp(8px, 1.5vw, 12px);
+    color: var(--gold);
+    margin-top: 1.5rem;
+    position: relative;
+    z-index: 1;
+    opacity: 0.9;
+  }
+
+  .hero-credits {
+    margin-top: 2rem;
+    color: var(--text2);
+    font-size: 14px;
+    position: relative;
+    z-index: 1;
+    font-style: italic;
+  }
+
+  .hero-badges {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    position: relative;
+    z-index: 1;
+  }
+
+  .badge {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    padding: 0.5rem 1.2rem;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .hero-scroll {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    animation: bounce 2s infinite;
+    color: var(--red);
+    font-size: 24px;
+    z-index: 1;
+  }
+
+  @keyframes bounce {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(10px); }
+  }
+
+  /* ===== MAIN LAYOUT ===== */
+  main {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+
+  /* ===== SECTION HEADERS ===== */
+  .section {
+    margin-bottom: 5rem;
+    padding-top: 80px;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--border);
+    position: relative;
+  }
+
+  .section-header::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 80px;
+    height: 2px;
+    background: var(--red);
+    box-shadow: var(--glow-red);
+  }
+
+  .section-title {
+    font-family: 'Press Start 2P', monospace;
+    font-size: clamp(12px, 2vw, 18px);
+    color: var(--text);
+    line-height: 1.5;
+  }
+
+  .section-icon {
+    font-size: 2rem;
+  }
+
+  /* ===== CARDS ===== */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.5rem;
+    transition: border-color 0.3s, transform 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px;
+    height: 100%;
+    background: var(--red);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .card:hover {
+    border-color: rgba(224,48,48,0.4);
+    transform: translateY(-2px);
+  }
+
+  .card:hover::before { opacity: 1; }
+
+  .card-title {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 11px;
+    color: var(--gold);
+    margin-bottom: 1rem;
+    line-height: 1.6;
+  }
+
+  .card-body {
+    color: var(--text2);
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  .card-body strong { color: var(--text); }
+
+  /* ===== GRID LAYOUTS ===== */
+  .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 1.5rem; }
+  .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+  .grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.25rem; }
+
+  /* ===== HIT TYPE CARDS ===== */
+  .hit-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.5rem;
+    text-align: center;
+    transition: all 0.3s;
+  }
+
+  .hit-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+  }
+
+  .hit-card.sweep { border-top: 3px solid var(--blue); }
+  .hit-card.sprint { border-top: 3px solid var(--orange); }
+  .hit-card.crit { border-top: 3px solid var(--red); }
+  .hit-card.pick { border-top: 3px solid var(--text2); }
+  .hit-card.standard { border-top: 3px solid var(--purple); }
+
+  .hit-icon { font-size: 2.5rem; margin-bottom: 0.75rem; }
+  .hit-name {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 9px;
+    margin-bottom: 0.75rem;
+    color: var(--text);
+  }
+  .hit-charge {
+    display: inline-block;
+    background: var(--bg3);
+    border-radius: 4px;
+    padding: 0.25rem 0.75rem;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 13px;
+    color: var(--gold);
+    margin-bottom: 0.75rem;
+  }
+  .hit-desc { font-size: 14px; color: var(--text2); }
+
+  /* ===== TECHNIQUE CARDS ===== */
+  .technique-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    transition: all 0.3s;
+  }
+
+  .technique-card:hover {
+    border-color: rgba(224,48,48,0.5);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+  }
+
+  .tech-header {
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .tech-header.damage { background: linear-gradient(135deg, rgba(224,48,48,0.15) 0%, transparent 100%); }
+  .tech-header.stun { background: linear-gradient(135deg, rgba(245,200,66,0.15) 0%, transparent 100%); }
+  .tech-header.nokb { background: linear-gradient(135deg, rgba(74,158,255,0.15) 0%, transparent 100%); }
+  .tech-header.knockaway { background: linear-gradient(135deg, rgba(255,140,66,0.15) 0%, transparent 100%); }
+  .tech-header.spacing { background: linear-gradient(135deg, rgba(155,109,255,0.15) 0%, transparent 100%); }
+  .tech-header.escape { background: linear-gradient(135deg, rgba(66,255,140,0.15) 0%, transparent 100%); }
+
+  .tech-name {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 10px;
+    color: var(--text);
+    line-height: 1.6;
+  }
+
+  .tech-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.4rem;
+  }
+
+  .tech-type {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.2rem 0.6rem;
+    border-radius: 3px;
+  }
+
+  .type-damage { background: rgba(224,48,48,0.2); color: var(--red2); border: 1px solid rgba(224,48,48,0.3); }
+  .type-stun { background: rgba(245,200,66,0.2); color: var(--gold); border: 1px solid rgba(245,200,66,0.3); }
+  .type-nokb { background: rgba(74,158,255,0.2); color: var(--blue); border: 1px solid rgba(74,158,255,0.3); }
+  .type-knockaway { background: rgba(255,140,66,0.2); color: var(--orange); border: 1px solid rgba(255,140,66,0.3); }
+  .type-spacing { background: rgba(155,109,255,0.2); color: var(--purple); border: 1px solid rgba(155,109,255,0.3); }
+  .type-escape { background: rgba(66,255,140,0.2); color: var(--green); border: 1px solid rgba(66,255,140,0.3); }
+
+  .risk-reward {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    color: var(--text2);
+    white-space: nowrap;
+  }
+
+  .stars-gold { color: var(--gold); }
+  .stars-dim { color: #333; }
+
+  .tech-body {
+    padding: 1.5rem;
+  }
+
+  .tech-creator {
+    font-size: 12px;
+    color: var(--text2);
+    font-style: italic;
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .tech-how {
+    margin-bottom: 1.25rem;
+  }
+
+  .tech-how h4 {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 8px;
+    color: var(--red);
+    margin-bottom: 0.75rem;
+    text-transform: uppercase;
+  }
+
+  .tech-how p, .tech-how li {
+    font-size: 14px;
+    color: var(--text2);
+    line-height: 1.7;
+    margin-bottom: 0.5rem;
+  }
+
+  .tech-how li { margin-left: 1.25rem; }
+  .tech-how p strong, .tech-how li strong { color: var(--text); }
+
+  .tech-scenarios {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    margin-top: 1.25rem;
+  }
+
+  .scenario {
+    padding: 0.75rem 1rem;
+    border-radius: 6px;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  .scenario.best {
+    background: rgba(66,255,140,0.05);
+    border: 1px solid rgba(66,255,140,0.2);
+    color: var(--green);
+  }
+
+  .scenario.worst {
+    background: rgba(224,48,48,0.05);
+    border: 1px solid rgba(224,48,48,0.2);
+    color: var(--red2);
+  }
+
+  .scenario-label {
+    font-weight: 700;
+    display: block;
+    margin-bottom: 0.25rem;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  /* ===== FLASHCARDS ===== */
+  .flashcard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.25rem;
+  }
+
+  .flashcard {
+    perspective: 1000px;
+    height: 200px;
+    cursor: pointer;
+  }
+
+  .flashcard-inner {
+    position: relative;
+    width: 100%; height: 100%;
+    transform-style: preserve-3d;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .flashcard.flipped .flashcard-inner {
+    transform: rotateY(180deg);
+  }
+
+  .flashcard-front, .flashcard-back {
+    position: absolute;
+    inset: 0;
+    backface-visibility: hidden;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    text-align: center;
+  }
+
+  .flashcard-front {
+    background: var(--card);
+    border: 1px solid var(--border);
+  }
+
+  .flashcard-back {
+    background: var(--bg3);
+    border: 1px solid rgba(224,48,48,0.3);
+    transform: rotateY(180deg);
+    text-align: left;
+    justify-content: flex-start;
+    overflow-y: auto;
+  }
+
+  .flashcard-front-icon { font-size: 2rem; margin-bottom: 0.75rem; }
+  .flashcard-front-name {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 9px;
+    color: var(--text);
+    line-height: 1.6;
+    margin-bottom: 0.5rem;
+  }
+  .flashcard-front-hint { font-size: 12px; color: var(--text2); }
+  .flashcard-back-title {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 8px;
+    color: var(--gold);
+    margin-bottom: 0.75rem;
+    line-height: 1.6;
+  }
+  .flashcard-back-text { font-size: 13px; color: var(--text2); line-height: 1.6; }
+  .flashcard-back-text strong { color: var(--text); }
+  .flip-hint {
+    position: absolute;
+    bottom: 0.5rem;
+    right: 0.75rem;
+    font-size: 10px;
+    color: var(--text2);
+    opacity: 0.5;
+  }
+
+  /* ===== COUNTER CHART ===== */
+  .counter-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+
+  .counter-table th {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 9px;
+    padding: 1rem 1.25rem;
+    text-align: left;
+    border-bottom: 2px solid var(--red);
+    color: var(--text2);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .counter-table td {
+    padding: 0.9rem 1.25rem;
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+  }
+
+  .counter-table tr:hover td { background: rgba(255,255,255,0.02); }
+
+  .counter-table .tech-cell {
+    color: var(--red2);
+    font-weight: 700;
+  }
+
+  .counter-table .counter-cell {
+    color: var(--green);
+    font-weight: 600;
+  }
+
+  /* ===== TIPS BOX ===== */
+  .tip-box {
+    background: var(--bg3);
+    border-left: 4px solid var(--gold);
+    padding: 1rem 1.5rem;
+    border-radius: 0 6px 6px 0;
+    margin-bottom: 1rem;
+    font-size: 15px;
+    color: var(--text2);
+    line-height: 1.7;
+  }
+
+  .tip-box strong { color: var(--text); }
+
+  .warning-box {
+    background: rgba(224,48,48,0.05);
+    border-left: 4px solid var(--red);
+    padding: 1rem 1.5rem;
+    border-radius: 0 6px 6px 0;
+    margin-bottom: 1rem;
+    font-size: 15px;
+    color: var(--text2);
+    line-height: 1.7;
+  }
+
+  .warning-box strong { color: var(--red2); }
+
+  .info-box {
+    background: rgba(74,158,255,0.05);
+    border-left: 4px solid var(--blue);
+    padding: 1rem 1.5rem;
+    border-radius: 0 6px 6px 0;
+    margin-bottom: 1rem;
+    font-size: 15px;
+    color: var(--text2);
+    line-height: 1.7;
+  }
+
+  /* ===== TABS ===== */
+  .tabs {
+    display: flex;
+    gap: 0;
+    border-bottom: 2px solid var(--border);
+    margin-bottom: 2rem;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .tabs::-webkit-scrollbar { display: none; }
+
+  .tab-btn {
+    background: none;
+    border: none;
+    color: var(--text2);
+    font-family: 'Press Start 2P', monospace;
+    font-size: 9px;
+    padding: 0.75rem 1.25rem;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -2px;
+    white-space: nowrap;
+    transition: all 0.2s;
+    text-transform: uppercase;
+  }
+
+  .tab-btn:hover { color: var(--text); }
+  .tab-btn.active {
+    color: var(--gold);
+    border-bottom-color: var(--gold);
+  }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  /* ===== PLAYSTYLE FLOW ===== */
+  .flow-box {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .flow-title {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 10px;
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .flow-title.equal { color: var(--blue); }
+  .flow-title.aggressor { color: var(--red2); }
+  .flow-title.defender { color: var(--gold); }
+
+  .flow-step {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 0.75rem;
+    align-items: flex-start;
+  }
+
+  .flow-num {
+    min-width: 28px; height: 28px;
+    background: var(--bg3);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 12px;
+    color: var(--gold);
+    flex-shrink: 0;
+  }
+
+  .flow-text {
+    font-size: 14px;
+    color: var(--text2);
+    line-height: 1.6;
+    padding-top: 4px;
+  }
+
+  .flow-text strong { color: var(--text); }
+  .flow-text em { color: var(--red2); font-style: normal; font-weight: 700; }
+
+  /* ===== COMPONENTS GRID ===== */
+  .component-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.5rem;
+    text-align: center;
+    transition: all 0.3s;
+  }
+
+  .component-card:hover {
+    border-color: rgba(74,158,255,0.4);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 30px rgba(74,158,255,0.1);
+  }
+
+  .comp-icon { font-size: 2.5rem; margin-bottom: 0.75rem; }
+  .comp-name {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 9px;
+    color: var(--blue);
+    margin-bottom: 0.75rem;
+    line-height: 1.6;
+  }
+  .comp-desc { font-size: 14px; color: var(--text2); line-height: 1.6; }
+
+  /* ===== PING CARDS ===== */
+  .ping-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .ping-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .ping-header {
+    padding: 1rem 1.5rem;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 10px;
+  }
+
+  .ping-card.low .ping-header { background: rgba(66,255,140,0.1); color: var(--green); border-bottom: 1px solid rgba(66,255,140,0.2); }
+  .ping-card.high .ping-header { background: rgba(224,48,48,0.1); color: var(--red2); border-bottom: 1px solid rgba(224,48,48,0.2); }
+
+  .ping-body { padding: 1.25rem; }
+  .ping-body p, .ping-body li { font-size: 14px; color: var(--text2); line-height: 1.7; margin-bottom: 0.5rem; }
+  .ping-body li { margin-left: 1.25rem; }
+  .ping-body strong { color: var(--text); }
+
+  /* ===== FOOTER ===== */
+  footer {
+    background: var(--bg2);
+    border-top: 2px solid var(--border);
+    padding: 3rem 2rem;
+    text-align: center;
+  }
+
+  .footer-logo {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 14px;
+    color: var(--red);
+    text-shadow: var(--glow-red);
+    margin-bottom: 1rem;
+  }
+
+  .footer-text { color: var(--text2); font-size: 14px; margin-bottom: 0.5rem; }
+
+  /* ===== TAG ===== */
+  .tag {
+    display: inline-block;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 12px;
+    padding: 0.15rem 0.5rem;
+    border-radius: 3px;
+    margin: 0.1rem;
+  }
+
+  .tag-red { background: rgba(224,48,48,0.15); color: var(--red2); border: 1px solid rgba(224,48,48,0.3); }
+  .tag-gold { background: rgba(245,200,66,0.15); color: var(--gold); border: 1px solid rgba(245,200,66,0.3); }
+  .tag-blue { background: rgba(74,158,255,0.15); color: var(--blue); border: 1px solid rgba(74,158,255,0.3); }
+
+  /* ===== RULE BOX ===== */
+  .rules-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.25rem;
+  }
+
+  .rule-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.25rem;
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    transition: all 0.2s;
+  }
+
+  .rule-card:hover { border-color: rgba(74,158,255,0.3); }
+
+  .rule-icon { font-size: 1.75rem; flex-shrink: 0; }
+  .rule-title { font-weight: 700; color: var(--text); margin-bottom: 0.3rem; font-size: 15px; }
+  .rule-desc { font-size: 14px; color: var(--text2); line-height: 1.6; }
+
+  /* ===== SCROLL TO TOP ===== */
+  #scrollTop {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    background: var(--red);
+    color: white;
+    border: none;
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    font-size: 18px;
+    cursor: pointer;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 500;
+    box-shadow: var(--glow-red);
+    transition: all 0.2s;
+  }
+  #scrollTop:hover { transform: scale(1.1); }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 600px) {
+    .grid-2, .grid-3 { grid-template-columns: 1fr; }
+    .tech-scenarios { grid-template-columns: 1fr; }
+    .counter-table { font-size: 12px; }
+    .counter-table th, .counter-table td { padding: 0.75rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav>
+  <div class="nav-logo">⚔️ 1.9 SWORD</div>
+  
+<input id="siteSearch" placeholder="Search techniques..." 
+style="margin-left:1rem;background:#111118;border:1px solid #2a2a3a;color:#e8e8f0;padding:6px 10px;border-radius:4px;font-size:12px;">
+
+<div class="nav-links">
+    <a href="#basics">Basics</a>
+    <a href="#hit-types">Hit Types</a>
+    <a href="#gamerules">Game Rules</a>
+    <a href="#techniques">Techniques</a>
+    <a href="#sweeps">Sweeps</a>
+    <a href="#combos">Combos</a>
+    <a href="#playstyle">Playstyle</a>
+    <a href="#counters">Counters</a>
+    <a href="#components">Components</a>
+    <a href="#matchups">Matchups</a>
+    <a href="#ping">Ping</a>
+    <a href="#flashcards">Flashcards</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-title">⚔️ MINECRAFT 1.9<br>SWORD PvP GUIDE ⚔️</div>
+  <div class="hero-sub">THE COMPLETE REFERENCE — EVERY TECHNIQUE, COUNTER & STRATEGY</div>
+  <div class="hero-credits">Created by <strong style="color:var(--gold)">xYuvalx</strong> · Organization & decoration by <strong style="color:var(--gold)">iDexy</strong> · Spelling & clips by <strong style="color:var(--gold)">Kokichus</strong></div>
+  <div class="hero-badges">
+    <span class="badge" style="color:var(--red2);border-color:rgba(224,48,48,0.3)">Since 2016</span>
+    <span class="badge" style="color:var(--gold);border-color:rgba(245,200,66,0.3)">Full Potential Meta</span>
+    <span class="badge" style="color:var(--blue);border-color:rgba(74,158,255,0.3)">Complete Guide</span>
+  </div>
+  
+<div style="margin-top:1.5rem">
+<button onclick="startTrainingMode()" 
+style="background:#e03030;border:none;padding:10px 16px;border-radius:6px;color:white;font-weight:bold;cursor:pointer;">
+Training Mode
+</button>
+</div>
+
+<div class="hero-scroll">▼</div>
+</div>
+
+<main>
+
+<!-- ===== BASICS ===== -->
+<section class="section" id="basics">
+  <div class="section-header">
+    <span class="section-icon">📋</span>
+    <h2 class="section-title">General Tips for Reading This Guide</h2>
+  </div>
+
+  <div class="warning-box">
+    <strong>⚠️ IMPORTANT:</strong> The guide is organized in a way that makes sense. Follow the order of the channels. <strong>Don't proceed to the next section until you can perform the techniques in the current one comfortably.</strong> Leave Advanced and Advanced Sweeps until after you reach your peak. Core + Intermediate techniques are enough to nearly maximize your potential as a player.
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">💡 TRAINING TIPS</div>
+      <div class="card-body">
+        <ul style="list-style:none;padding:0;">
+          <li style="padding:0.4rem 0;border-bottom:1px solid var(--border)">After being able to perform techniques intuitively, try to <strong>not overthink</strong> in PvP and play instinctively.</li>
+          <li style="padding:0.4rem 0;border-bottom:1px solid var(--border)">Always <strong>1v1 better players</strong> than you or people that challenge you to improve.</li>
+          <li style="padding:0.4rem 0;border-bottom:1px solid var(--border)"><strong>Copy what better players do.</strong></li>
+          <li style="padding:0.4rem 0;border-bottom:1px solid var(--border)">After you finish a fight, think on <strong>what you could have done better</strong>, and how you can counter certain strategies.</li>
+          <li style="padding:0.4rem 0;border-bottom:1px solid var(--border)">Don't play the same against everyone — <strong>change your playstyle</strong> depending on the player.</li>
+          <li style="padding:0.4rem 0;border-bottom:1px solid var(--border)"><strong>Hold sprint</strong> throughout all of the fight.</li>
+          <li style="padding:0.4rem 0;border-bottom:1px solid var(--border)"><strong>Aim straight forward</strong> for max reach.</li>
+          <li style="padding:0.4rem 0">❌ Crouch does <strong>NOT</strong> reduce knockback like some think.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">📝 TECHNIQUE TYPES</div>
+      <div class="card-body" style="display:flex;flex-direction:column;gap:0.6rem;">
+        <div><span class="tag tag-red">Damage</span> — Deals extra damage to the opponent</div>
+        <div><span class="tag tag-gold">Stun</span> — Locks opponent in place, unable to retaliate</div>
+        <div><span class="tag tag-blue">NoKb</span> — Reduces or eliminates knockback you receive</div>
+        <div><span class="tag" style="background:rgba(255,140,66,0.15);color:var(--orange);border:1px solid rgba(255,140,66,0.3)">Knockaway</span> — Knocks opponent away from you</div>
+        <div><span class="tag" style="background:rgba(155,109,255,0.15);color:var(--purple);border:1px solid rgba(155,109,255,0.3)">Spacing</span> — Controls distance from opponent</div>
+        <div><span class="tag" style="background:rgba(66,255,140,0.15);color:var(--green);border:1px solid rgba(66,255,140,0.3)">Escape</span> — Gets you out of a bad situation</div>
+        <div style="margin-top:0.75rem;padding-top:0.75rem;border-top:1px solid var(--border);">
+          <strong>Risk/Reward System:</strong><br>
+          ⭐ = Low &nbsp;|&nbsp; ⭐⭐ = Medium &nbsp;|&nbsp; ⭐⭐⭐ = High<br><br>
+          <strong>Low Reward</strong> = Cheap extra damage, no follow-up control<br>
+          <strong>Medium Reward</strong> = Gets you out of a bad situation<br>
+          <strong>High Reward</strong> = Gets you hit priority / hit advantage
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== HIT TYPES ===== -->
+<section class="section" id="hit-types">
+  <div class="section-header">
+    <span class="section-icon">⚔️</span>
+    <h2 class="section-title">Hit Types</h2>
+  </div>
+  <p style="color:var(--text2);margin-bottom:1.5rem;font-size:15px;">There are <strong style="color:var(--gold)">5 different hits</strong>, all with individual sound.</p>
+  <div class="grid-4" style="grid-template-columns:repeat(auto-fit,minmax(200px,1fr))">
+    <div class="hit-card sweep">
+      <div class="hit-icon">🪃</div>
+      <div class="hit-name">SWEEP HIT</div>
+      <div class="hit-charge">90% – 100%</div>
+      <div class="hit-desc">Cancel your sprint hit, hit normally. Deals damage to <strong>everyone in range</strong>. Requires sprint cancellation.</div>
+    </div>
+    <div class="hit-card sprint">
+      <div class="hit-icon">💨</div>
+      <div class="hit-name">SPRINT HIT</div>
+      <div class="hit-charge">90% – 100%</div>
+      <div class="hit-desc">Hit <strong>while sprinting</strong>. Gains extra knockback on the opponent. Priority over standard hits, crits, and sweeps.</div>
+    </div>
+    <div class="hit-card crit">
+      <div class="hit-icon">💥</div>
+      <div class="hit-name">CRITICAL HIT</div>
+      <div class="hit-charge">90% – 100%</div>
+      <div class="hit-desc">Hit <strong>while falling</strong>. Deals excess damage. Shows special particles. Most important offensive tool.</div>
+    </div>
+    <div class="hit-card pick">
+      <div class="hit-icon">🔨</div>
+      <div class="hit-name">PICK HIT</div>
+      <div class="hit-charge">0% – 90%</div>
+      <div class="hit-desc">Under-charged hit. Less damage and knockback. Used situationally to stop KB or deal cheap damage.</div>
+    </div>
+    <div class="hit-card standard">
+      <div class="hit-icon">🗡️</div>
+      <div class="hit-name">STANDARD HIT</div>
+      <div class="hit-charge">90% – 100%</div>
+      <div class="hit-desc">Hit while <strong>jumping without sprint</strong>. Not useful in combat on its own.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== GAME RULES & TERMS ===== -->
+<section class="section" id="gamerules">
+  <div class="section-header">
+    <span class="section-icon">📝</span>
+    <h2 class="section-title">Game Rules & Terms</h2>
+  </div>
+
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab(this, 'rules-tab')">Game Rules</button>
+    <button class="tab-btn" onclick="switchTab(this, 'terms-tab')">Terms</button>
+  </div>
+
+  <div id="rules-tab" class="tab-content active">
+    <div class="rules-grid">
+      <div class="rule-card">
+        <div class="rule-icon">📏</div>
+        <div><div class="rule-title">Reach</div><div class="rule-desc">The max range is <strong>3 blocks</strong>.</div></div>
+      </div>
+      <div class="rule-card">
+        <div class="rule-icon">🚀</div>
+        <div><div class="rule-title">Momentum</div><div class="rule-desc">Moving <strong>forward = more range</strong>. Moving back or standing in place = less range.</div></div>
+      </div>
+      <div class="rule-card">
+        <div class="rule-icon">🔻</div>
+        <div><div class="rule-title">Knockback Rule 1</div><div class="rule-desc">If you <strong>sprint while facing the target</strong>, you get less knockback (while falling too).</div></div>
+      </div>
+      <div class="rule-card">
+        <div class="rule-icon">⚡</div>
+        <div><div class="rule-title">Knockback Rule 2</div><div class="rule-desc">Hitting while taking KB and sprinting at the same time <strong>reduces your remaining KB by 40%</strong>.</div></div>
+      </div>
+      <div class="rule-card">
+        <div class="rule-icon">🦆</div>
+        <div><div class="rule-title">Crouch</div><div class="rule-desc"><strong>Decreases your hitbox size</strong>. Does NOT reduce knockback.</div></div>
+      </div>
+      <div class="rule-card">
+        <div class="rule-icon">👑</div>
+        <div><div class="rule-title">Priority</div><div class="rule-desc"><strong>Sprinthits have priority</strong> over Standard hits, Crits, and Sweeps.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="terms-tab" class="tab-content">
+    <div class="grid-2">
+      <div class="card"><div class="card-title">First Hit</div><div class="card-body">The first hit you land on your opponent when both are in a neutral position.</div></div>
+      <div class="card"><div class="card-title">Hit Advantage</div><div class="card-body">Whenever you are in a position where you can hit your opponent first.</div></div>
+      <div class="card"><div class="card-title">Hit Priority</div><div class="card-body">Initially gained through landing your hit first, giving you control over the fight. Can shift between players mid-trade depending on how things play out.</div></div>
+      <div class="card"><div class="card-title">Stun</div><div class="card-body">Getting a hit that gets your opponent stunned — unable to hit you back and move towards you.</div></div>
+      <div class="card"><div class="card-title">Knock Away</div><div class="card-body">A Sprinthit that knocks people away from you.</div></div>
+      <div class="card"><div class="card-title">Double Hit</div><div class="card-body">Whenever you knock someone away and are able to hit them again without getting hit back.</div></div>
+      <div class="card"><div class="card-title">Crit Chain</div><div class="card-body">Getting multiple crits in a row.</div></div>
+      <div class="card"><div class="card-title">Stun Combo</div><div class="card-body">Getting multiple stun hits in a row.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TECHNIQUES ===== -->
+<section class="section" id="techniques">
+  <div class="section-header">
+    <span class="section-icon">🎯</span>
+    <h2 class="section-title">Core Techniques</h2>
+  </div>
+
+  <div class="grid-2">
+
+    <!-- SPRINTHITS -->
+    <div class="technique-card">
+      <div class="tech-header stun">
+        <div>
+          <div class="tech-name">⚔️ SPRINTHITS</div>
+          <div class="tech-creator">Technique Creator: LoCr · Name Creator: LoCr</div>
+        </div>
+        <div class="tech-meta">
+          <span class="tech-type type-stun">Stun</span>
+          <div class="risk-reward">Risk ⭐☆☆ · Reward ⭐⭐⭐</div>
+        </div>
+      </div>
+      <div class="tech-body">
+        <div class="tech-how">
+          <h4>🔻 How to Perform</h4>
+          <p>Sprinthits deal more knockback and are meant to stun the target. If you hold sprint, only the first hit of the combo will be a sprint hit and all the rest will be sweep hits. You need to keep <strong>resetting your sprint</strong> to keep getting sprinthits with every hit. When the target gets knocked back, their range gets lowered, allowing you to keep comboing without being touched.</p>
+          <p><strong>3 ways to reset your sprint:</strong></p>
+          <ol style="margin-left:1.25rem;color:var(--text2);font-size:14px;line-height:1.8">
+            <li><strong>W-Taps</strong> — Release W and press it again after every hit. Riskier, countered by NoKb moves.</li>
+            <li><strong>Pausing W-Taps</strong> — Pause before pressing W again. Abuses full knockback, better stun.</li>
+            <li><strong>S-Taps</strong> — Best stun if done correctly. Keep s-tapping to 3 block range so opponent can't touch you.</li>
+          </ol>
+          <p style="margin-top:0.75rem;color:var(--text2);font-style:italic;font-size:13px;">Crouch-tap: Completely useless, but resets sprinthit.</p>
+          <p>You can get sprinthit combos with either <strong>strafe OR straight-line</strong>. Maintain 3 block spacing and perfect hit timing. When to use each sprint reset tactic is situational and depends on the spacing you need.</p>
+        </div>
+        <div class="tech-scenarios">
+          <div class="scenario best"><span class="scenario-label">✅ Best Scenarios</span>Combos</div>
+          <div class="scenario worst"><span class="scenario-label">❌ Worst Scenarios</span>VS Jump Reset, Hit Select</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STANDARD CRITS -->
+    <div class="technique-card">
+      <div class="tech-header damage">
+        <div>
+          <div class="tech-name">⚔️ STANDARD CRITS</div>
+          <div class="tech-creator">Old names: W Release Crits / Normal Crits · Creator: LoCr / Stumpie</div>
+        </div>
+        <div class="tech-meta">
+          <span class="tech-type type-damage">Damage</span>
+          <div class="risk-reward">Risk ⭐⭐☆ · Reward ⭐⭐☆</div>
+        </div>
+      </div>
+      <div class="tech-body">
+        <div class="tech-how">
+          <h4>🔻 How to Perform</h4>
+          <p>Jump and hit <strong>while falling</strong>. Release W every time before you go for a hit (to cancel the sprinthit) — this way your hit turns into a crit. You can start critting from the first hit or use it in the middle of a combo.</p>
+          <p>You can release "W" in different timings depending on the situation. <strong>Releasing W late</strong> gives a bit more range and KB reduction, but less control. Make sure you are jumping from the right distance or you can get knocked away before landing your hit.</p>
+        </div>
+        <div class="tech-scenarios">
+          <div class="scenario best"><span class="scenario-label">✅ Best Scenarios</span>VS Punish Crit, Double Crit</div>
+          <div class="scenario worst"><span class="scenario-label">❌ Worst Scenarios</span>VS Crit Deflection</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CRIT DEFLECTION -->
+    <div class="technique-card">
+      <div class="tech-header knockaway">
+        <div>
+          <div class="tech-name">⚔️ CRIT DEFLECTION</div>
+          <div class="tech-creator">Technique Creator: xYuvalx · Name Creator: xYuvalx</div>
+        </div>
+        <div class="tech-meta">
+          <span class="tech-type type-knockaway">Knockaway</span>
+          <div class="risk-reward">Risk ⭐⭐☆ · Reward ⭐⭐☆</div>
+        </div>
+      </div>
+      <div class="tech-body">
+        <div class="tech-how">
+          <h4>🔻 How to Perform</h4>
+          <p><strong>A counter to Standard Crits / Double Crits.</strong> Sprinthit the opponent right after they land a crit on you. If done correctly, they will get knocked away.</p>
+        </div>
+        <div class="tech-scenarios">
+          <div class="scenario best"><span class="scenario-label">✅ Best Scenarios</span>VS Standard Crits, Double Crits</div>
+          <div class="scenario worst"><span class="scenario-label">❌ Worst Scenarios</span>VS NoKb Crits</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PUNISH CRIT -->
+    <div class="technique-card">
+      <div class="tech-header damage">
+        <div>
+          <div class="tech-name">⚔️ PUNISH CRIT</div>
+          <div class="tech-creator">Name Creator: xYuvalx</div>
+        </div>
+        <div class="tech-meta">
+          <span class="tech-type type-damage">Damage</span>
+          <div class="risk-reward">Risk ⭐⭐☆ · Reward ⭐☆☆</div>
+        </div>
+      </div>
+      <div class="tech-body">
+        <div class="tech-how">
+          <h4>🔻 How to Perform</h4>
+          <p>After getting knocked back by a hit, use the knockback as a result to <strong>punish the opponent with a crit</strong> (hit while falling from the knockback you just took).</p>
+        </div>
+        <div class="tech-scenarios">
+          <div class="scenario best"><span class="scenario-label">✅ Best Scenarios</span>Set up for a Double Crit or NoKb Crit</div>
+          <div class="scenario worst"><span class="scenario-label">❌ Worst Scenarios</span>Using Punish Crits not as a setup — this will rarely be good on its own</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- NOKB CRIT -->
+    <div class="technique-card">
+      <div class="tech-header nokb">
+        <div>
+          <div class="tech-name">⚔️ NOKB CRIT</div>
+          <div class="tech-creator">Technique Inventor: Unknown · Name Creator: xYuvalx</div>
+        </div>
+        <div class="tech-meta">
+          <span class="tech-type type-nokb">NoKb</span>
+          <div class="risk-reward">Risk ⭐⭐☆ · Reward ⭐⭐⭐</div>
+        </div>
+      </div>
+      <div class="tech-body">
+        <div class="tech-how">
+          <h4>🔻 How to Perform</h4>
+          <p><strong>A counter to Crit Deflection.</strong> After you Crit someone, hold W and wait for your opponent to hit you. This way your knockback will be reduced. Only after they hit you, go for your 2nd hit — either a <strong>Punish Crit</strong> or a <strong>Falling Sprinthit</strong> (depends on situation).</p>
+          <ol style="margin-left:1.25rem;color:var(--text2);font-size:14px;line-height:1.8">
+            <li><strong>Punish Crit follow-up:</strong> Lets you stay on target and keep combo going without opponent deflecting your crits. Stop right in front of them (don't go through them) for consistent aim. KB still reduced. If opponent spaces well, you won't get many NoKb Crits in a row.</li>
+            <li><strong>Falling Sprinthit follow-up:</strong> After opponent sprinthits you, they get stunned (if done from right range), letting you keep the combo. Can s-tap after for extra space to ensure the stun. With correct spacing, you can stun someone no matter how close you land. Time your W key correctly — can let go of W briefly for more spacing.</li>
+          </ol>
+        </div>
+        <div class="tech-scenarios">
+          <div class="scenario best"><span class="scenario-label">✅ Best Scenarios</span>VS Crit Deflection</div>
+          <div class="scenario worst"><span class="scenario-label">❌ Worst Scenarios</span>VS Double Crits, S-Hold Deflection, Repositioning, Standard Crits</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DOUBLE CRIT -->
+    <div class="technique-card">
+      <div class="tech-header damage">
+        <div>
+          <div class="tech-name">⚔️ DOUBLE CRIT</div>
+          <div class="tech-creator">Technique Inventor: Tryh4rdd · Discovered by: xYuvalx · Name Creator: xYuvalx</div>
+        </div>
+        <div class="tech-meta">
+          <span class="tech-type type-damage">Damage</span>
+          <div class="risk-reward">Risk ⭐⭐☆ · Reward ⭐⭐☆</div>
+        </div>
+      </div>
+      <div class="tech-body">
+        <div class="tech-how">
+          <h4>🔻 How to Perform</h4>
+          <p><strong>A counter to NoKb Crits.</strong> After you get NoKb Critted, use a Punish Crit and immediately jump again for a Standard Crit.</p>
+          <p>It <strong>ONLY</strong> works if your opponent goes for a Punish Crit/NoKb Crits on you. If they sprinthit when you use Double Crit, you will get knocked away.</p>
+          <p>It is risky to use a Double Crit on your first hit because this technique can be easily countered. An exception is if you predict your opponent to use a "first hit nokb crit." Works at all ranges but <strong>best vs Short Range NoKb Crits</strong>. Can also strafe with it to try making opponent miss.</p>
+        </div>
+        <div class="tech-scenarios">
+          <div class="scenario best"><span class="scenario-label">✅ Best Scenarios</span>VS NoKb Crits</div>
+          <div class="scenario worst"><span class="scenario-label">❌ Worst Scenarios</span>VS Standard Crits, Crit Deflection</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- HIT SELECT -->
+    <div class="technique-card">
+      <div class="tech-header stun">
+        <div>
+          <div class="tech-name">⚔️ HIT SELECT</div>
+          <div class="tech-creator"></div>
+        </div>
+        <div class="tech-meta">
+          <span class="tech-type type-stun">Stun / NoKb</span>
+          <div class="risk-reward">Risk ⭐⭐☆ · Reward ⭐⭐⭐</div>
+        </div>
+      </div>
+      <div class="tech-body">
+        <div class="tech-how">
+          <h4>🔻 How to Perform</h4>
+          <p>Let someone hit you, and then sprinthit them back immediately. If done correctly, the target will get stunned. Hit Select will <strong>REDUCE your knockback by 40% of the remaining KB</strong> after you hit the target.</p>
+          <p>If you want to maximize the KB reduction, <strong>hit the target as fast as you can</strong> after you get hit. Sometimes if you are too close, after they hit you it can be good to wait an extra tiny bit of time before holding W again to gain enough distance to stun them.</p>
+        </div>
+        <div class="tech-scenarios">
+          <div class="scenario best"><span class="scenario-label">✅ Best Scenarios</span>When already close to target, in middle of trades. Counters Sprinthits / S-Hold Deflection.</div>
+          <div class="scenario worst"><span class="scenario-label">❌ Worst Scenarios</span>Hit selecting from very close range, Hit-Selecting on first hits (usually)</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- UPPERCUT -->
+    <div class="technique-card">
+      <div class="tech-header stun">
+        <div>
+          <div class="tech-name">⚔️ UPPERCUT</div>
+          <div class="tech-creator">Technique Creator: Monkss · Name Creator: Monkss</div>
+        </div>
+        <div class="tech-meta">
+          <span class="tech-type type-stun">Stun</span>
+          <div class="risk-reward">Risk ⭐☆☆ · Reward ⭐⭐⭐</div>
+        </div>
+      </div>
+      <div class="tech-body">
+        <div class="tech-how">
+          <h4>🔻 How to Perform</h4>
+          <p>Hit the opponent <strong>while jumping forward</strong>.</p>
+          <ol style="margin-left:1.25rem;color:var(--text2);font-size:14px;line-height:1.8">
+            <li><strong>Use Uppercuts to cover long distance quickly:</strong> Abuse this when you get a hit advantage while in the right distance for an uppercut. Catch the opponent by surprise, giving you a chance to stun them and get a combo off. Can also be used as a combo extension — whenever someone is about to get out of combo range or tries to back away, use an uppercut to close distance better.</li>
+            <li><strong>Uppercut Combo</strong> (W-Tap / S-Tap uppercut combos, Straightline / Strafe): Use uppercuts to combo your opponent. You can combine SOME uppercuts within your combo, or get full combos from uppercuts alone. Uppercut combos probably give the <strong>best stun</strong> out of any other way of comboing, if performed correctly. Can also s-tap after an uppercut for better stun or spacing.</li>
+          </ol>
+        </div>
+        <div class="tech-scenarios">
+          <div class="scenario best"><span class="scenario-label">✅ Best Scenarios</span>Needing to cover a long distance in a short amount of time</div>
+          <div class="scenario worst"><span class="scenario-label">❌ Worst Scenarios</span>Too close to the opponent</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FALLING SPRINTHIT -->
+    <div class="technique-card">
+      <div class="tech-header knockaway">
+        <div>
+          <div class="tech-name">⚔️ FALLING SPRINTHIT</div>
+          <div class="tech-creator">Name Creator: Katerzs</div>
+        </div>
+        <div class="tech-meta">
+          <span class="tech-type type-knockaway">Knockaway</span>
+          <div class="risk-reward">Risk ⭐⭐☆ · Reward ⭐⭐⭐</div>
+        </div>
+      </div>
+      <div class="tech-body">
+        <div class="tech-how">
+          <h4>🔻 How to Perform</h4>
+          <p>Sprinthit <strong>while FALLING</strong>. There are multiple scenarios where Falling Sprinthits can be good. It can also be used for comboing — it can confuse your opponent and make them think you are trying to crit them so they won't walk backwards, allowing you to keep comboing them.</p>
+        </div>
+        <div class="tech-scenarios">
+          <div class="scenario best"><span class="scenario-label">✅ Best Scenarios</span>Falling Sprinthit After a NoKb Crit, Combo Extension, Counter to people who hold S defensively, Counter to Crit Trades</div>
+          <div class="scenario worst"><span class="scenario-label">❌ Worst Scenarios</span>VS people who hold W from a neutral position</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- S-CRITS -->
+    <div class="technique-card">
+      <div class="tech-header spacing">
+        <div>
+          <div class="tech-name">⚔️ S-CRITS</div>
+          <div class="tech-creator">Name Creator: xYuvalx</div>
+        </div>
+        <div class="tech-meta">
+          <span class="tech-type type-spacing">Spacing</span>
+          <div class="risk-reward">Risk ⭐⭐☆ · Reward ⭐⭐⭐</div>
+        </div>
+      </div>
+      <div class="tech-body">
+        <div class="tech-how">
+          <h4>🔻 How to Perform</h4>
+          <p>Tap or hold S (depending on the scenario) after critting at a specific timing to get enough distance from your opponent so they can't hit you back, giving you a hit advantage.</p>
+          <p><strong>3 ways to use S-Crits:</strong></p>
+          <ol style="margin-left:1.25rem;color:var(--text2);font-size:14px;line-height:1.8">
+            <li><strong>Hit Advantage Tool:</strong> Position yourself to hit opponent while they can't hit back.</li>
+            <li><strong>Combo Set Up:</strong> Use S Crits for spacing to be able to STUN your target.</li>
+            <li><strong>Escape Tool:</strong> Escape a dangerous scenario.</li>
+          </ol>
+        </div>
+        <div class="tech-scenarios">
+          <div class="scenario best"><span class="scenario-label">✅ Best Scenarios</span>When your opponent is falling from their jump</div>
+          <div class="scenario worst"><span class="scenario-label">❌ Worst Scenarios</span>When opponent is too close to the ground (they can jump again and crit you out). Countered by Double Crits if used off a NoKb Crit.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- S-HOLD DEFLECTION -->
+    <div class="technique-card">
+      <div class="tech-header stun">
+        <div>
+          <div class="tech-name">⚔️ S-HOLD DEFLECTION</div>
+          <div class="tech-creator">Name Creator: xYuvalx</div>
+        </div>
+        <div class="tech-meta">
+          <span class="tech-type type-stun">Stun</span>
+          <div class="risk-reward">Risk ⭐⭐☆ · Reward ⭐⭐⭐</div>
+        </div>
+      </div>
+      <div class="tech-body">
+        <div class="tech-how">
+          <h4>🔻 How to Perform</h4>
+          <p><strong>A counter to mid-long range NoKb Crits.</strong> Tap "S" (from long range) or Hold "S" (from mid range) right after you use a "Crit Deflection", to get more range on your opponent. Can be combined with "Repositioning".</p>
+          <p><strong>Only works if done defensively</strong> — your opponent has to come to you.</p>
+        </div>
+        <div class="tech-scenarios">
+          <div class="scenario best"><span class="scenario-label">✅ Best Scenarios</span>VS NoKb Crit from mid-long range</div>
+          <div class="scenario worst"><span class="scenario-label">❌ Worst Scenarios</span>VS Short Range NoKb Crit / Falling Sprinthit</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- REPOSITIONING -->
+    <div class="technique-card">
+      <div class="tech-header spacing">
+        <div>
+          <div class="tech-name">⚔️ REPOSITIONING</div>
+          <div class="tech-creator">Name Creator: xYuvalx</div>
+        </div>
+        <div class="tech-meta">
+          <span class="tech-type type-spacing">Spacing</span>
+          <div class="risk-reward">Risk ⭐⭐☆ · Reward ⭐⭐⭐</div>
+        </div>
+      </div>
+      <div class="tech-body">
+        <div class="tech-how">
+          <h4>🔻 How to Perform</h4>
+          <p>Changing your position to be in the <strong>optimal range to get a stun hit</strong>. Usually by using the S key (S-Hold or S-Tap). Can also use A/D but it's harder and less effective in most cases. Can be combined with other techniques — for example using an S-Crit to reposition yourself for a stun.</p>
+        </div>
+        <div class="tech-scenarios">
+          <div class="scenario best"><span class="scenario-label">✅ Best Scenarios</span>VS NoKb Crit</div>
+          <div class="scenario worst"><span class="scenario-label">❌ Worst Scenarios</span>VS Sprinthits, any kind of crit beside NoKb Crit</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- JUMP RESET -->
+    <div class="technique-card">
+      <div class="tech-header nokb">
+        <div>
+          <div class="tech-name">⚔️ JUMP RESET</div>
+          <div class="tech-creator"></div>
+        </div>
+        <div class="tech-meta">
+          <span class="tech-type type-nokb">NoKb</span>
+          <div class="risk-reward">Risk ⭐⭐☆ · Reward ⭐⭐☆</div>
+        </div>
+      </div>
+      <div class="tech-body">
+        <div class="tech-how">
+          <h4>🔻 How to Perform</h4>
+          <p>Jump while sprinting forward <strong>right as someone hits you</strong>. Must be done with perfect timing by knowing your opponent's hit timing. If done correctly, your knockback will be significantly reduced. Can also be spammable vs any sprinthit that isn't a "stun hit."</p>
+          <p><strong>⚠️ Easily countered by:</strong></p>
+          <ol style="margin-left:1.25rem;color:var(--text2);font-size:14px;line-height:1.8">
+            <li><strong>Delaying a hit</strong> intentionally to mess with the jump timing.</li>
+            <li><strong>Stun Hits:</strong> Against players good at spacing, Jump Resets will be BAD in many cases. Even if you eventually break free from a combo, you might take too much damage for it to be worth it.</li>
+          </ol>
+          <p><strong>When SHOULD you use Jump Resets?</strong></p>
+          <ol style="margin-left:1.25rem;color:var(--text2);font-size:14px;line-height:1.8">
+            <li>Learn when your opponent doesn't have enough distance to stun you with their next hit.</li>
+            <li>Jump Resets can be good on first hits if both go for a ground hit sprinthit — reduces chances of getting stunned and can potentially help you stun them instead.</li>
+          </ol>
+        </div>
+        <div class="tech-scenarios">
+          <div class="scenario best"><span class="scenario-label">✅ Best Scenarios</span>VS Sprinthits</div>
+          <div class="scenario worst"><span class="scenario-label">❌ Worst Scenarios</span>VS Perfect Stun Hits / Delayed Hit Timing</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PICK HIT -->
+    <div class="technique-card">
+      <div class="tech-header damage">
+        <div>
+          <div class="tech-name">⚔️ PICK HIT</div>
+          <div class="tech-creator">Name Creator: LoCr</div>
+        </div>
+        <div class="tech-meta">
+          <span class="tech-type type-damage">Damage</span>
+          <div class="risk-reward">Risk ⭐⭐☆ · Reward ⭐⭐☆</div>
+        </div>
+      </div>
+      <div class="tech-body">
+        <div class="tech-how">
+          <h4>🔻 How to Perform</h4>
+          <p>Hit the target with your crosshair at <strong>90% charge or lower</strong>.</p>
+          <p>Picks can be used effectively in two ways:</p>
+          <ol style="margin-left:1.25rem;color:var(--text2);font-size:14px;line-height:1.8">
+            <li>When you're about to get out of reach before your sword is fully charged.</li>
+            <li>While the opponent is getting knocked back, catch them close to the end of your reach with a pick hit — this will stop their knockback and stun them. Now follow it up with any hit of your choice (Stun combos are usually best).</li>
+          </ol>
+        </div>
+        <div class="tech-scenarios">
+          <div class="scenario best"><span class="scenario-label">✅ Best Scenarios</span>Stopping opponent's KB at 3 blocks to stun them, or applying cheap damage as they receive KB and crosshair isn't fully charged</div>
+          <div class="scenario worst"><span class="scenario-label">❌ Worst Scenarios</span>Any other scenario</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SPRINT CRITS -->
+    <div class="technique-card">
+      <div class="tech-header damage">
+        <div>
+          <div class="tech-name">⚔️ SPRINT CRITS</div>
+          <div class="tech-creator">Technique Creator: LoCr · Name Creator: LoCr</div>
+        </div>
+        <div class="tech-meta">
+          <span class="tech-type type-damage">Damage / NoKb</span>
+          <div class="risk-reward">Risk ⭐⭐⭐ · Reward ⭐⭐☆</div>
+        </div>
+      </div>
+      <div class="tech-body">
+        <div class="warning-box" style="margin-bottom:0.75rem;">
+          <strong>⚠️ NOTE:</strong> This technique is mostly inferior to Standard Crits / NoKb Crits since there is less control and it's harder to get it to work. Recommended to skip this and come back to it once you finish Advanced channels — and even then you don't really have to learn this.
+        </div>
+        <div class="tech-how">
+          <h4>🔻 How to Perform</h4>
+          <p>Since sprint hits have priority over crits, to use Sprint Crits you have to cancel the "sprint hit" first by hitting the opponent, and then <strong>without releasing W and without releasing sprint</strong>, jump and hit while falling to crit the target.</p>
+          <p>You can do BOTH Standard Crits and NoKb Crits with Sprint Crits. Usually better to cancel the sprinthit while on the ground before going for sprint crits, but in rare situations, you can start sprint critting right after a falling sprinthit or an uppercut.</p>
+        </div>
+        <div class="tech-scenarios">
+          <div class="scenario best"><span class="scenario-label">✅ Best Scenarios</span>Same as Standard Crits / NoKb Crits depending on which you choose</div>
+          <div class="scenario worst"><span class="scenario-label">❌ Worst Scenarios</span>Same as Standard Crits / NoKb Crits depending on which you choose</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PUNISH CRIT REACTION -->
+    <div class="technique-card">
+      <div class="tech-header knockaway">
+        <div>
+          <div class="tech-name">🎯 PUNISH CRIT REACTION</div>
+          <div class="tech-creator">Technique Creator: xYuvalx · Name Creator: xYuvalx</div>
+        </div>
+        <div class="tech-meta">
+          <span class="tech-type type-knockaway">Knockaway / Damage</span>
+          <div class="risk-reward">Risk ⭐⭐☆ · Reward ⭐⭐☆</div>
+        </div>
+      </div>
+      <div class="tech-body">
+        <div class="tech-how">
+          <h4>🔻 How to Perform</h4>
+          <p>Objective: Being able to know when your opponent wants to "Double Crit" or "NoKb Crit", and counter instantly. A Punish Crit will be <strong>more delayed</strong> than a Sprinthit (since to punish crit, you hit while falling; to Sprinthit you can hit while taking knockback).</p>
+          <p><strong>Double Crit Reaction:</strong> When you NoKb Crit someone and they try to Sprinthit you away but can't, they'll decide to Double Crit. Recognize the change in hit timing from Sprinthit to PunishCrit turning into Double Crit — Sprinthit them away to counter it, potentially getting a combo off. Once good at this, you can react to people who use DoubleCrits right after your first hit.</p>
+          <p><strong>NoKb Crit Reaction:</strong> Some people will go for NoKb Crits after their punish crit — recognize it and react with a <strong>Double Crit</strong> instead of a sprinthit. If they go for a Sprinthit after their punish crit, keep NoKb Critting them.</p>
+        </div>
+        <div class="tech-scenarios">
+          <div class="scenario best"><span class="scenario-label">✅ Best Scenarios</span>Depends on reaction type</div>
+          <div class="scenario worst"><span class="scenario-label">❌ Worst Scenarios</span>Depends on reaction type</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- NOKB COMBO -->
+    <div class="technique-card">
+      <div class="tech-header nokb">
+        <div>
+          <div class="tech-name">🎯 NOKB COMBO</div>
+          <div class="tech-creator">Name Creator: xYuvalx</div>
+        </div>
+        <div class="tech-meta">
+          <span class="tech-type type-nokb">NoKb</span>
+          <div class="risk-reward">Risk ⭐⭐⭐ · Reward ⭐⭐⭐</div>
+        </div>
+      </div>
+      <div class="tech-body">
+        <div class="tech-how">
+          <h4>🔻 How to Perform</h4>
+          <p><strong>An advanced counter to Crit Deflections.</strong> Combo with NoKb Crit into Jump Reset.</p>
+          <p>Whenever you crit your opponent while they're on the ground, they will either <strong>try to deflect your crit</strong>, or <strong>punish crit/double crit</strong> after you crit them.</p>
+          <p><strong>If opponent goes for Crit Deflection:</strong> Right after you land your Crit on them, use a Jump Reset on the incoming sprinthit. It will reduce your KB to literally 0. Makes it way harder to knock you away and puts you in a better position to out-trade.</p>
+          <p><strong>If opponent goes for Punish Crit/Double Crit:</strong> Using a NoKb Crit into Jump Reset puts you in the air already because of the jump, allowing you to still get your second crit without getting countered. (This makes aiming harder though.)</p>
+          <p>This move is hard to pull off — you need good timing and understanding of their "crit deflection" timing. If you mess up, you end up getting knocked away.</p>
+          <p><strong>When to use:</strong> First Hits VS Deflection, In the middle of a NoKb Crit chain.</p>
+          <p><strong>Only ways to counter:</strong> 1) Change the timing on crit deflection so opponent misses the NoKb Combo timing. 2) Punish crit into a crit deflection (Credit: QZ69).</p>
+        </div>
+        <div class="tech-scenarios">
+          <div class="scenario best"><span class="scenario-label">✅ Best Scenarios</span>VS Deflection</div>
+          <div class="scenario worst"><span class="scenario-label">❌ Worst Scenarios</span>VS Inconsistent hit timing / Punish Crit into Deflection</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FALLING SPRINTHIT DEFLECTION -->
+    <div class="technique-card">
+      <div class="tech-header knockaway">
+        <div>
+          <div class="tech-name">🎯 FALLING SPRINTHIT DEFLECTION<br><span style="font-size:8px;color:var(--text2)">(Crit Trade Counter)</span></div>
+          <div class="tech-creator"></div>
+        </div>
+        <div class="tech-meta">
+          <span class="tech-type type-knockaway">Knockaway</span>
+          <div class="risk-reward">Risk ⭐⭐☆ · Reward ⭐⭐☆</div>
+        </div>
+      </div>
+      <div class="tech-body">
+        <div class="tech-how">
+          <h4>🔻 How to Perform</h4>
+          <p>When you and your opponent are about to crit each other at the <strong>exact same time</strong>, let them crit you and then do a "falling sprinthit" instead of a crit, right after they land their crit on you (use a "crit deflection" timing). It will result in them getting knocked away, allowing you to start a combo.</p>
+          <p>Can be used in the middle of a trade, or on first hits right before the trade starts. It's usually hard to "predict" when you are ABOUT to crit each other at the same time, therefore it is recommended to first let the situation occur, and do a Falling Sprinthit Deflection on the second crit:</p>
+          <p><strong>Crit at same time → Jump again → Let them crit you → Falling Sprinthit Deflection.</strong></p>
+        </div>
+        <div class="tech-scenarios">
+          <div class="scenario best"><span class="scenario-label">✅ Best Scenarios</span>When both you and opponent are about to crit each other at the same time</div>
+          <div class="scenario worst"><span class="scenario-label">❌ Worst Scenarios</span>Any other scenario</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CROUCH DODGE -->
+    <div class="technique-card">
+      <div class="tech-header escape">
+        <div>
+          <div class="tech-name">🎯 CROUCH DODGE</div>
+          <div class="tech-creator">Name Creator: xYuvalx</div>
+        </div>
+        <div class="tech-meta">
+          <span class="tech-type type-escape">Escape</span>
+          <div class="risk-reward">Risk ⭐☆☆ · Reward ⭐⭐☆</div>
+        </div>
+      </div>
+      <div class="tech-body">
+        <div class="warning-box" style="margin-bottom:0.75rem;"><strong>⚠️ This move is only low risk if used as a LAST RESORT!</strong></div>
+        <div class="tech-how">
+          <h4>🔻 How to Perform</h4>
+          <p>Hold crouch right before your opponent is about to swing, to dodge their hit (crouching reduces your hitbox size).</p>
+          <p><strong>NEVER</strong> rely on crouching — it's not guaranteed you'll dodge every time, and using it incorrectly might result in taking unnecessary damage. The main use is when you're on the ground and your opponent is critting, since they have to look down to crit you and when you crouch the upper part of your hitbox becomes smaller. (Ineffective against punish crits.)</p>
+          <p><strong>When is it good to crouch?</strong></p>
+          <ol style="margin-left:1.25rem;color:var(--text2);font-size:14px;line-height:1.8">
+            <li>When you go for a straightline hit on them as they try to crit you. (Works when they're on the ground too, but less consistent.)</li>
+            <li>Whenever you're in a position where you're gonna get critted regardless — crouch as a last resort move to at least chance them missing.</li>
+          </ol>
+        </div>
+        <div class="tech-scenarios">
+          <div class="scenario best"><span class="scenario-label">✅ Best Scenarios</span>As a LAST RESORT — if you're in a bad position you'll get hit anyway / if there's no risk using this</div>
+          <div class="scenario worst"><span class="scenario-label">❌ Worst Scenarios</span>Any other scenario</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STUN-HIT PREDICTION/REACTION -->
+    <div class="technique-card">
+      <div class="tech-header escape">
+        <div>
+          <div class="tech-name">🎯 STUN-HIT PREDICTION / REACTION</div>
+          <div class="tech-creator">Technique Creator: xYuvalx · Name Creator: xYuvalx</div>
+        </div>
+        <div class="tech-meta">
+          <span class="tech-type type-escape">Escape</span>
+          <div class="risk-reward">Risk ⭐☆☆ · Reward ⭐⭐☆</div>
+        </div>
+      </div>
+      <div class="tech-body">
+        <div class="tech-how">
+          <h4>🔻 How to Perform</h4>
+          <p>This is an advanced strategy for avoiding combos:</p>
+          <p><strong>Stun-Hit Prediction:</strong> When you are ABOUT to get stunned, hold S immediately <strong>right on the hit that is supposed to stun you</strong>. That will make it so your opponent loses their combo before they even started it.</p>
+          <p><strong>Stun-Hit Reaction:</strong> Reacting to your opponent's spacing techniques and holding S before they can stun you. For example — when they try to reposition, or when they s-crit.</p>
+        </div>
+        <div class="tech-scenarios">
+          <div class="scenario best"><span class="scenario-label">✅ Best Scenarios</span>When you predict you will get stunned by a hit</div>
+          <div class="scenario worst"><span class="scenario-label">❌ Worst Scenarios</span>—</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===== SWEEPS ===== -->
+<section class="section" id="sweeps">
+  <div class="section-header">
+    <span class="section-icon">🪃</span>
+    <h2 class="section-title">Advanced Sweeps</h2>
+  </div>
+
+  <div class="card" style="margin-bottom:1.5rem;">
+    <div class="card-title">⚔️ HOW TO SWEEP (BASICS)</div>
+    <div class="card-body">
+      <p>Name Creator: LoCr. Sprinthits have priority over sweeps. To get a sweep you need to cancel the sprinthit first (or just not sprint):</p>
+      <p style="margin-top:0.75rem;"><strong>1. Sprint Sweep</strong> — Hold "W" + Sprint and go for a combo. The first hit of the combo will always be a sprinthit, after which the rest of your hits will be sweeps until you reset your sprint.</p>
+      <p><strong>2. "W Release Sweeps"</strong> — Release "W" every time before you hit. IE: Release "W" → Hit → Press "W" again. You could also strafe without touching "W" at all in some situations — usually better in the middle of a combo, don't start a combo this way.</p>
+    </div>
+  </div>
+
+  <div class="grid-2">
+
+    <div class="technique-card">
+      <div class="tech-header damage">
+        <div><div class="tech-name">🪃 SINGLE SWEEP</div><div class="tech-creator">Name Creator: xYuvalx</div></div>
+        <div class="tech-meta"><span class="tech-type type-damage">Damage</span><div class="risk-reward">Risk ⭐⭐☆ · Reward ⭐⭐☆</div></div>
+      </div>
+      <div class="tech-body">
+        <div class="tech-how"><h4>🔻 How to Perform</h4>
+          <p>Going for a <strong>SINGLE sweep</strong>, to make people miss their hit. Combine it with different types of hits like sprinthits or crits, depending on the situation.</p>
+        </div>
+        <div class="tech-scenarios">
+          <div class="scenario best"><span class="scenario-label">✅ Best Scenarios</span>When people get really close to you (allows strafing out of their vision with the sweep) / If they miss a hit</div>
+          <div class="scenario worst"><span class="scenario-label">❌ Worst Scenarios</span>Long range</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="technique-card">
+      <div class="tech-header damage">
+        <div><div class="tech-name">🪃 SWEEP COMBO</div><div class="tech-creator"></div></div>
+        <div class="tech-meta"><span class="tech-type type-damage">Damage</span><div class="risk-reward">Risk ⭐⭐☆ · Reward ⭐⭐☆</div></div>
+      </div>
+      <div class="tech-body">
+        <div class="tech-how"><h4>🔻 How to Perform</h4>
+          <p>Strafing while using sweeps will significantly increase the opponent's chances of missing hits. Aim is heavily reliant on predictions, and it's very hard to predict where your character will be when you strafe with sweeps.</p>
+          <p>Sweep combos will USUALLY be good if you're in a position where they are already unable to hit you (e.g. you end up behind them, or they miss their hit). Only works if already in close range — in some situations better than sprinthits because sprinthits from close range are easy to aim against and give opponent the chance to hit select you. If you sweep, you <strong>cannot be hit selected as long as you are close to them</strong>. You can also change up the movement pattern once they try to recover their aim.</p>
+        </div>
+        <div class="tech-scenarios">
+          <div class="scenario best"><span class="scenario-label">✅ Best Scenarios</span>Close range, when they miss their hit</div>
+          <div class="scenario worst"><span class="scenario-label">❌ Worst Scenarios</span>Long range</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="technique-card">
+      <div class="tech-header stun">
+        <div><div class="tech-name">🪃 PUNISH SWEEP</div><div class="tech-creator">Technique Creator: xYuvalx · Name Creator: iDexy</div></div>
+        <div class="tech-meta"><span class="tech-type type-stun">Stun</span><div class="risk-reward">Risk ⭐☆☆ · Reward ⭐⭐⭐</div></div>
+      </div>
+      <div class="tech-body">
+        <div class="tech-how"><h4>🔻 How to Perform</h4>
+          <p><strong>A counter to Hit Select.</strong> Sweep into Sprinthit: Sweep the opponent → let them sprinthit you → sprinthit them back to stun them.</p>
+          <p>Sweep the opponent when they try to hit select you. Your sweep will deal less KB than a sprinthit, making it so your opponent can't get enough range to stun you. Now you are pushed back from their sprinthit, putting you in the right range to stun them with your next sprinthit.</p>
+          <p>You could also go for Punish Sweeps while comboing people — it can confuse them and make them think they don't need to hold S to escape, allowing you to stay in control and deal a lot more damage. <strong>Punish Sweeps will ONLY work if you have a Hit Priority.</strong></p>
+        </div>
+        <div class="tech-scenarios">
+          <div class="scenario best"><span class="scenario-label">✅ Best Scenarios</span>VS Hit Select</div>
+          <div class="scenario worst"><span class="scenario-label">❌ Worst Scenarios</span>Any other time</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="technique-card">
+      <div class="tech-header escape">
+        <div><div class="tech-name">🪃 BACKAWAY SWEEP</div><div class="tech-creator">Technique Creator: xYuvalx · Name Creator: xYuvalx</div></div>
+        <div class="tech-meta"><span class="tech-type type-escape">Escape</span><div class="risk-reward">Risk ⭐☆☆ · Reward ⭐⭐☆</div></div>
+      </div>
+      <div class="tech-body">
+        <div class="tech-how"><h4>🔻 How to Perform</h4>
+          <p>Sweep into S-Crit. Sweep the opponent → let them hit you → S-Crit away. This could be good if you want to disengage or gain a hit advantage. <strong>Works only when you have a "Hit Priority."</strong></p>
+        </div>
+        <div class="tech-scenarios">
+          <div class="scenario best"><span class="scenario-label">✅ Best Scenarios</span>When you hit a hit priority</div>
+          <div class="scenario worst"><span class="scenario-label">❌ Worst Scenarios</span>Any other occasion</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="technique-card">
+      <div class="tech-header damage">
+        <div><div class="tech-name">🪃 FOLLOWUP SWEEP</div><div class="tech-creator">Technique Creator: xYuvalx · Name Creator: xYuvalx</div></div>
+        <div class="tech-meta"><span class="tech-type type-damage">Damage</span><div class="risk-reward">Risk ⭐☆☆ · Reward ⭐⭐☆</div></div>
+      </div>
+      <div class="tech-body">
+        <div class="tech-how"><h4>🔻 How to Perform</h4>
+          <p>Holding W as people try to back away from your combos, to catch them with a Sweep. Since sweeps deal less knockback, it allows you to stay on people even if they hold S trying to escape your combo.</p>
+          <p>This can be combined with a "Punish Sweep" to extend your combo — when you go in with a sweep people won't think they need to hold S to escape, which lets you counter the incoming hit-select with a punish sweep and keep the combo going. Can also be combined with "Backaway Sweep."</p>
+        </div>
+        <div class="tech-scenarios">
+          <div class="scenario best"><span class="scenario-label">✅ Best Scenarios</span>When people hold S</div>
+          <div class="scenario worst"><span class="scenario-label">❌ Worst Scenarios</span>When you don't predict correctly and they don't try to back away</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="technique-card">
+      <div class="tech-header stun">
+        <div><div class="tech-name">🪃 BACK SWEEP (Crit Trade Counter)</div><div class="tech-creator"></div></div>
+        <div class="tech-meta"><span class="tech-type type-stun">Stun</span><div class="risk-reward">Risk ⭐☆☆ · Reward ⭐⭐⭐</div></div>
+      </div>
+      <div class="tech-body">
+        <div class="tech-how"><h4>🔻 How to Perform</h4>
+          <p>When you and your opponent are about to crit each other at the <strong>exact same time</strong>, let them crit you <strong>while holding S</strong> and use a sweep on them after they land the crit. It will result in them getting stunned, granting you a hit advantage.</p>
+          <p>Can be used in the middle of a trade or on first hits. It's usually hard to "predict" simultaneous crits — recommended to let it happen once first, then use Back Sweep on the second crit:</p>
+          <p><strong>Crit at same time → Jump again → Let them crit you (holding S) → Back Sweep.</strong></p>
+        </div>
+        <div class="tech-scenarios">
+          <div class="scenario best"><span class="scenario-label">✅ Best Scenarios</span>When both you and opponent are about to crit each other at the same time</div>
+          <div class="scenario worst"><span class="scenario-label">❌ Worst Scenarios</span>Any other scenario</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="technique-card">
+      <div class="tech-header escape">
+        <div><div class="tech-name">🪃 SIDE SWEEP</div><div class="tech-creator">Technique Creator: xYuvalx · Name Creator: xYuvalx</div></div>
+        <div class="tech-meta"><span class="tech-type type-escape">Escape</span><div class="risk-reward">Risk ⭐☆☆ · Reward ⭐⭐⭐</div></div>
+      </div>
+      <div class="tech-body">
+        <div class="tech-how"><h4>🔻 How to Perform</h4>
+          <p><strong>An advanced counter to people who rush in aggressively</strong> (with NoKb Crits, aggressive straightline, etc).</p>
+          <p>When you know that someone is going to rush into you aggressively (usually with a NoKb move), hold W and run into them, and then AFTER you get hit, let go of W and <strong>hold ONLY "D" or "A"</strong> depending on your position, and turn towards them then hit them with a sweep.</p>
+          <p>This move is meant to make your opponent completely lose their aim and get you out of a bad scenario. It won't always work, but it's still 100% the best move to go for in specific situations, especially because this is a very low risk move.</p>
+          <p>This move will only work when — your opponent uses a low KB hit (e.g. a crit), OR when they make your KB stop (e.g. sprinthitting you too fast while walking forward aggressively).</p>
+        </div>
+        <div class="tech-scenarios">
+          <div class="scenario best"><span class="scenario-label">✅ Best Scenarios</span>VS players who rush in aggressively with NoKb Crits or aggressive straightlines</div>
+          <div class="scenario worst"><span class="scenario-label">❌ Worst Scenarios</span>When they don't rush into you</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===== COMBOS & MOVEMENT ===== -->
+<section class="section" id="combos">
+  <div class="section-header">
+    <span class="section-icon">🎯</span>
+    <h2 class="section-title">Combos, Movement & Escape</h2>
+  </div>
+
+  <div class="grid-2">
+    <div>
+      <div class="card" style="margin-bottom:1.5rem;">
+        <div class="card-title">🎯 COMBO SET-UP</div>
+        <div class="card-body">
+          <p>Combos consist of <strong>Hit Timing</strong> and <strong>Spacing</strong>. If you space yourself around 3 blocks away while sprinthitting with correct hit timing (adjusts based on opponent's ping), you should be able to lock people in "stun combos" indefinitely.</p>
+          <p style="margin-top:0.75rem;"><strong>Hit Timing:</strong> If you hit people too fast, their KB stops. If you hit them too slow, they can walk through your combo by just holding W.</p>
+          <p style="margin-top:0.75rem;">Every single combo will start with a <strong>Stun</strong> OR a <strong>Knock Away</strong> on your opponent.</p>
+          <div class="tip-box" style="margin-top:1rem;">
+            <strong>⚡ Winning a Trade VS Getting a Combo:</strong> When you win a trade, it's usually by 1-2 hits. Getting a combo lets you hit multiple times without taking damage. Therefore, look to <strong>COMBO</strong> when you get the chance, instead of attempting to win trades.
+          </div>
+          <p><strong>All ways to get a Stun / Knockaway to start a combo:</strong></p>
+          <p style="margin-top:0.5rem;color:var(--text2);">Repositioning, Crit Deflection, S-Hold Deflection, Falling Sprinthit after NoKb Crit, Falling Sprinthit, Uppercut, Hit Select, Pick Hit, Crit Trade Counters, Hit Dodging</p>
+        </div>
+      </div>
+
+      <div class="card" style="margin-bottom:1.5rem;">
+        <div class="card-title">🏃‍♂️ ESCAPING STUN HITS / COMBOS</div>
+        <div class="card-body">
+          <p>There are <strong>3 ways to escape stun combos</strong> depending on the situation:</p>
+          <ol style="margin-left:1.25rem;margin-top:0.75rem;line-height:1.9;font-size:14px;color:var(--text2)">
+            <li><strong>Hold S</strong> — This is the most common way to escape stun combos.</li>
+            <li><strong>S-Hold Jump</strong> — Jump while holding S. This will increase the knockback you receive. Use this ONLY when you feel like you need that extra knockback for them to not be able to reach you. Only works if done on hits like Deflection, that you can jump before they happen. Mainly useful VS high ping.</li>
+            <li><strong>Turn back completely</strong> — In some scenarios you will have to turn back completely and run to be able to get out of your opponent's reach.</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="card" style="margin-bottom:1.5rem;">
+        <div class="card-title">🪃 HIT DODGING</div>
+        <div class="card-body">
+          <p><strong>1. Dodging First Hits:</strong> Walk back right before the opponent gets in range to hit you to dodge their incoming hit. Has to be done from the right distance with good timing. If you play defensively and let the opponent come to you, it makes it harder for them to hit you and easier for you to dodge. After dodging successfully, you can either attempt a stun combo or go for a crit.</p>
+          <div class="warning-box" style="margin:0.75rem 0;"><strong>⚠️ Countered by Falling Sprinthit!</strong></div>
+          <p><strong>2. Baits:</strong> Walk OR jump towards your opponent, baiting them to go in and then walk back immediately to dodge their hit, giving you a Hit Advantage. This is also the best counter to defensive players — getting them out of the defensive position, leaving them exposed to a hit.</p>
+          <p style="margin-top:0.75rem;"><strong>3. The Turn Back Movement:</strong></p>
+          <ol style="margin-left:1.25rem;color:var(--text2);font-size:14px;line-height:1.8;margin-top:0.5rem;">
+            <li>When you see that your opponent is about to attack you, turn back away from your opponent for a second to dodge the hit, then turn back towards your opponent and attack (better going for a crit after turning back — it is more efficient).</li>
+            <li>You can use this in the <strong>middle of a trade</strong> — sometimes you will have a very short period of time during a trade when you can use the turn back movement to dodge your opponent's hit or get yourself a hit advantage.</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">🚀 MOVEMENT</div>
+        <div class="card-body">
+          <p>Movement can be used for making your opponent miss hits, or gaining distance necessary for a stun hit. Usually you wouldn't want to move around when there's a risk of getting stunned (straightlining decreases your knockback, reducing chance of getting stunned). Better to attempt it when close enough to not get stunned, OR when opponent misses a hit. Works best with <strong>crits and sweeps</strong>, but can also work with sprinthits.</p>
+          <p style="margin-top:1rem;"><strong>Strafe Types:</strong></p>
+          <ol style="margin-left:1.25rem;color:var(--text2);font-size:14px;line-height:1.8;margin-top:0.5rem;">
+            <li><strong>Short Strafe</strong> — Strafes with faster A/D movements</li>
+            <li><strong>Side-To-Side Strafe</strong> — Switch the strafing direction after every hit</li>
+            <li><strong>Circle Strafe</strong> — Strafe to one side, circling around the target</li>
+          </ol>
+          <p style="margin-top:0.75rem;font-size:14px;color:var(--text2)">These techniques can be used with W-Taps, S-Taps, Pausing W-Taps, Crits, Uppercuts or Sweeps.</p>
+          <div class="warning-box" style="margin-top:0.75rem;"><strong>⚠️ Important:</strong> When you strafe it's a little harder to hit you, but you will also receive more KB which can result in getting stunned and combo'd. Only strafe in scenarios where you can't get punished for it. Strafing can be useful, but you could probably get tier 1 without strafing at all — it's a personal preference.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PLAYSTYLE ===== -->
+<section class="section" id="playstyle">
+  <div class="section-header">
+    <span class="section-icon">🥊</span>
+    <h2 class="section-title">Playstyle Structure</h2>
+  </div>
+
+  <div class="warning-box">
+    <strong>⚠️ IMPORTANT:</strong> Your playstyle should always be flexible. When you fight players for the first time, there is going to be a safer approach. Once you learn their patterns and decision making, you can change your playstyle accordingly to beat what they do.
+  </div>
+
+  <div class="card" style="margin-bottom:1.5rem;">
+    <div class="card-title">📋 GENERAL PLAYSTYLE TIPS</div>
+    <div class="card-body">
+      <ul style="list-style:none;padding:0;">
+        <li style="padding:0.4rem 0;border-bottom:1px solid var(--border)">Focus on <strong>first hits</strong>. Make sure you either hit your opponent first, or at least at the same time as they hit you. Missing a first hit gives your opponent a chance to combo you.</li>
+        <li style="padding:0.4rem 0;border-bottom:1px solid var(--border)">You would usually want to <strong>lead with crits</strong> if possible. There are some situations where ground hits can be better, but ideally focus more on critting.</li>
+        <li style="padding:0.4rem 0;border-bottom:1px solid var(--border)"><strong>Avoid getting critted "for free"</strong> at all cost. Try to be the one who crits first and avoid getting hit by a crit while you're on the ground.</li>
+        <li style="padding:0.4rem 0">In some situations, when critting it's better to <strong>release W in the last second</strong> for max reach and taking the lowest knockback you can. Mainly good when going for a crit as a first hit, or doing NoKb Crits.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="flow-box">
+    <div class="flow-title equal">⚖️ WHEN THE FIGHT IS IN AN EQUAL STATE</div>
+    <div class="flow-step"><div class="flow-num">1</div><div class="flow-text">If both are jumping in at around the same time, use <strong>Standard Crits</strong>. You want to be the first one to pull off a counter and gain a <em>Hit Advantage, Hit Priority or a Stun.</em></div></div>
+    <div class="flow-step"><div class="flow-num">2</div><div class="flow-text">Find a window to <strong>S-Crit</strong>, <strong>Deflect</strong>, use a <strong>Crit Trade Counter</strong>, or anything else that fits the situation best.</div></div>
+    <div class="flow-step"><div class="flow-num">3</div><div class="flow-text">Be ready to <strong>hold S</strong> in case your opponent manages to properly deflect you mid-trade, to avoid taking extra damage.</div></div>
+  </div>
+
+  <div class="flow-box">
+    <div class="flow-title aggressor">⚔️ WHEN YOU'RE THE AGGRESSOR</div>
+    <div class="flow-step"><div class="flow-num">1</div><div class="flow-text"><strong>Lead with a Crit.</strong> Now you have two options:</div></div>
+    <div class="flow-step"><div class="flow-num">A</div><div class="flow-text"><strong>Going for Standard Crits:</strong> If they do ANYTHING that isn't a Crit Deflection, you should win the trade. BUT if they choose to Deflect, react fast and <em>hold S</em> to avoid getting countered.</div></div>
+    <div class="flow-step"><div class="flow-num">B</div><div class="flow-text"><strong>Going for a NoKb Crit:</strong> If they try to Deflect it normally — you win. You have full control and can choose a <em>Falling Sprinthit Followup</em> or keep NoKb Critting. BUT: 1) They can lead with an S-Hold Deflection, which is very hard to react to in time. 2) They can lead with a Double Crit, which evens out the damage.</div></div>
+    <div class="flow-step"><div class="flow-num">2</div><div class="flow-text">If you lead with a <strong>ground hit</strong>, it should mainly be when you're either too close to crit, or you're trying to catch your opponent off guard (e.g. straightline sprinthitting them when they're mid-air trying to crit you).</div></div>
+  </div>
+
+  <div class="flow-box">
+    <div class="flow-title defender">🛡️ WHEN YOU'RE THE DEFENDER</div>
+    <div class="flow-step"><div class="flow-num">1</div><div class="flow-text"><strong>Avoid as much damage as possible whilst trying to get a Hit Advantage.</strong> Use Hit Dodging — it allows you to achieve a first hit, giving you control over the fight. Playing for hit dodging requires a more defensive position, making it harder to hit you. You can also jump in as soon as they get near.</div></div>
+    <div class="flow-step"><div class="flow-num">2</div><div class="flow-text">When you get <strong>critted on the ground</strong>, lead with either a <em>Crit Deflection</em> or an <em>S-Hold Deflection</em> (NOT a Double Crit — too risky since you can't know if they'll go Standard or NoKb Crits).</div></div>
+    <div class="flow-step"><div class="flow-num">3</div><div class="flow-text"><strong>S-Hold Deflection</strong> → When opponent lands far away (mid-long range). Ensures both Standard Crits AND mid-long range NoKb Crits get knocked away. ⚠️ BUT if used from close range, it could give opponent enough distance to stun you with a Falling Sprinthit. If they land close — FORCED to use Crit Deflection.</div></div>
+    <div class="flow-step"><div class="flow-num">4</div><div class="flow-text">If you go for a regular Crit Deflection as they go for a <strong>short range NoKb Crit</strong>, use a "Double Crit" on your next hit to counter their next NoKb Crit. If they choose to Deflect it to counter you, <em>hold S</em> in time — it resets the fight and gets you out of that bad spot.</div></div>
+  </div>
+
+  <div class="card" style="margin-bottom:1.5rem;">
+    <div class="card-title">❓ WHAT HAPPENS AS YOU FIGHT THEM MORE?</div>
+    <div class="card-body">
+      <p>When you reach a point where you learn how they play, you can start changing the structure mentioned above. For example, you CAN go for a <strong>Double Crit on your first hit</strong> if you already KNOW that their playstyle is revolved more around NoKb Crits, to be able to immediately counter it.</p>
+      <div class="tip-box" style="margin-top:1rem;"><strong>✅ You can pretty much change anything up depending on the player. Learn their playstyle, learn the way they think, and adapt properly.</strong></div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:1.5rem;">
+    <div class="card-title">🚀 SITUATIONAL COUNTERS TO DEFENSIVE PLAYERS</div>
+    <div class="card-body">
+      <ul style="list-style:none;padding:0;">
+        <li style="padding:0.4rem 0;border-bottom:1px solid var(--border)">Play defensively like they do — it kills their advantage and is a safe way to read your opponent before choosing what to do.</li>
+        <li style="padding:0.4rem 0;border-bottom:1px solid var(--border)">Critting defensive players is harder because you can't crit from the normal range. Run in a straightline to them and crit from a closer range than you usually would. Also release "W" a bit later (right before the hit) for a max range crit.</li>
+        <li style="padding:0.4rem 0;border-bottom:1px solid var(--border)">Do a <strong>double jump</strong> to close the gap faster. Can be good but might also be a bit risky at times.</li>
+        <li style="padding:0.4rem 0">Sometimes catching them off guard with a sudden <strong>sprinthit, uppercut, or falling sprinthit</strong> when they don't expect it can be effective.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="info-box">
+    <strong>📋 Final Thoughts:</strong> Being too calculated in PvP could hold you back to an extent. Only use this specific structure IF: you've learned the techniques but still feel like you don't understand what you're supposed to do, you already have a solid playstyle but feel like you have weaknesses, or you feel like you've reached a peak and want to make sure you're doing things correctly.
+  </div>
+
+  <div class="card" style="margin-top:1.5rem;">
+    <div class="card-title">🧑‍🏫 ADAPTATION</div>
+    <div class="card-body">
+      <p>Every player has a different playstyle, different ping, and likes to go for certain moves more than others. Adaptation is all about changing what YOU do to counter what your opponent does. This requires a lot of PvP knowledge and experience.</p>
+      <ul style="list-style:none;padding:0;margin-top:0.75rem;">
+        <li style="padding:0.5rem 0;border-bottom:1px solid var(--border)"><strong>Simple Adaptation:</strong> Adapting to a specific move your opponent goes for. For example, if you notice your opponent goes for NoKb Crits every chance they get, start instantly going for double crits whenever you get critted by them.</li>
+        <li style="padding:0.5rem 0;border-bottom:1px solid var(--border)"><strong>Advanced Adaptation:</strong> Recognizing a pattern of moves your opponent keeps going for — trading patterns, movement patterns etc — and knowing how to adapt and counter it.</li>
+        <li style="padding:0.5rem 0"><strong>Playstyle Adaptation:</strong> Changing parts of your playstyle, or changing it entirely, to beat a specific opponent by adapting to their playstyle.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:1.5rem;">
+    <div class="card-title">🧑‍🏫 BAITS</div>
+    <div class="card-body">
+      <p>Baiting your opponent into going for a certain move, then countering it. For example, baiting someone to go forward by running into them and then backing away to make them miss, giving you a hit advantage. Or jumping as if you're gonna crit them which baits them into trying to deflect, and then use a falling sprinthit instead to knock them away.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== COUNTERS ===== -->
+<section class="section" id="counters">
+  <div class="section-header">
+    <span class="section-icon">📊</span>
+    <h2 class="section-title">Counter Charts</h2>
+  </div>
+
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab(this, 'crit-counters')">Crit Counters</button>
+    <button class="tab-btn" onclick="switchTab(this, 'sprint-counters')">Sprint Hit Counters</button>
+    <button class="tab-btn" onclick="switchTab(this, 'others-counters')">Others</button>
+  </div>
+
+  <div id="crit-counters" class="tab-content active">
+    <table class="counter-table">
+      <thead><tr><th>Technique</th><th>Counter</th></tr></thead>
+      <tbody>
+        <tr><td class="tech-cell">NoKb Crit / Punish Crit</td><td class="counter-cell">Double Crit (best vs short range NoKb Crit)<br>S-Hold Deflection (best vs mid-long range NoKb Crit)<br>Standard Crits<br>Repositioning</td></tr>
+        <tr><td class="tech-cell">Standard Crit / Double Crit</td><td class="counter-cell">Crit Deflection</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div id="sprint-counters" class="tab-content">
+    <table class="counter-table">
+      <thead><tr><th>Technique</th><th>Counter</th></tr></thead>
+      <tbody>
+        <tr><td class="tech-cell">Crit Deflection</td><td class="counter-cell">NoKb Crit</td></tr>
+        <tr><td class="tech-cell">Sprinthit</td><td class="counter-cell">Jump Reset<br>Hit Select</td></tr>
+        <tr><td class="tech-cell">Hit Select</td><td class="counter-cell">Punish Sweep (You Sweep → they sprinthit → You sprinthit)</td></tr>
+        <tr><td class="tech-cell">S-Hold Deflection</td><td class="counter-cell">Short Range NoKb Crit<br>Falling Sprinthit</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div id="others-counters" class="tab-content">
+    <table class="counter-table">
+      <thead><tr><th>Technique</th><th>Counter</th></tr></thead>
+      <tbody>
+        <tr><td class="tech-cell">Sweep</td><td class="counter-cell">Sprinthits<br>Crits</td></tr>
+        <tr><td class="tech-cell">Jump Reset</td><td class="counter-cell">Delayed Hit Timing<br>Perfect Stun Hit</td></tr>
+        <tr><td class="tech-cell">Hit Dodging</td><td class="counter-cell">Falling Sprinthit</td></tr>
+        <tr><td class="tech-cell">Defensive Playstyle</td><td class="counter-cell">Baits</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ===== COMPONENTS ===== -->
+<section class="section" id="components">
+  <div class="section-header">
+    <span class="section-icon">⚙️</span>
+    <h2 class="section-title">Components of 1.9 Sword PvP</h2>
+  </div>
+
+  <div class="grid-3">
+    <div class="component-card"><div class="comp-icon">🎯</div><div class="comp-name">AIM</div><div class="comp-desc">Always one of the most important things in sword PvP.</div></div>
+    <div class="component-card"><div class="comp-icon">🏹</div><div class="comp-name">RANGE CONTROL</div><div class="comp-desc">How well you control range — knowing when you're close enough to hit your opponent or to dodge their hits. (Starting outside of hit range.)</div></div>
+    <div class="component-card"><div class="comp-icon">🥏</div><div class="comp-name">SPACING</div><div class="comp-desc">How well you can distance yourself from the opponent to get a stun hit. (Starting from hit range.)</div></div>
+    <div class="component-card"><div class="comp-icon">⏱️</div><div class="comp-name">TIMING</div><div class="comp-desc">Knowing how to time your hits well and the moves / counters you want to go for.</div></div>
+    <div class="component-card"><div class="comp-icon">🥊</div><div class="comp-name">KB CONTROL</div><div class="comp-desc">How well you can control your knockback — utilizing NoKb techniques properly, and understanding when you can't and need to back off in time.</div></div>
+    <div class="component-card"><div class="comp-icon">🪃</div><div class="comp-name">COMBO CONTROL</div><div class="comp-desc">How well you control your combos — knowing how to space within a combo, which technique to use, correct hit timing, and how to move correctly.</div></div>
+    <div class="component-card"><div class="comp-icon">🌪️</div><div class="comp-name">MOVEMENT</div><div class="comp-desc">Knowing how to control your movements to make your opponent miss, or to gain the proper amount of range needed.</div></div>
+    <div class="component-card"><div class="comp-icon">🧑‍🏫</div><div class="comp-name">KNOWLEDGE</div><div class="comp-desc">Technique usage, Versatility, Playstyle.</div></div>
+    <div class="component-card"><div class="comp-icon">🎖️</div><div class="comp-name">ADAPTATION</div><div class="comp-desc">How well you can adapt to different players, pings, different playstyles or different moves that people like to go for, to come out on top.</div></div>
+    <div class="component-card"><div class="comp-icon">🏆</div><div class="comp-name">PREDICTION</div><div class="comp-desc">Knowing how to read your opponent and knowing what they're gonna do before they do it.</div></div>
+  </div>
+</section>
+
+<!-- ===== MATCHUPS ===== -->
+<section class="section" id="matchups">
+  <div class="section-header">
+    <span class="section-icon">🗡️</span>
+    <h2 class="section-title">Special Matchups</h2>
+  </div>
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">🗡️ VS AXE 🪓</div>
+      <div class="card-body">
+        <p>When using a sword against an axe, you should use any attack that has <strong>low KB</strong>. Sweeps and crits are extremely effective against axe users, both if they run away or if they try to trade.</p>
+        <ul style="margin-left:1.25rem;margin-top:0.75rem;font-size:14px;color:var(--text2);line-height:1.8">
+          <li>When they try to trade — use punish crits and normal crit spam methods to out damage them.</li>
+          <li>If they try to run — chase with crits and sweeps.</li>
+          <li><strong>Dodging their first axe crits is very important</strong> as it can really mess them up because they have to go through a huge cooldown.</li>
+          <li>Hold W to perform <strong>sprint crits and sprint sweeps</strong> — this is a very easy method of beating axe, you will out damage any axe user this way in an OP kit setting.</li>
+          <li>Combine both methods of dodging arrows and fighting axes if you are fighting a <strong>trident</strong>!</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">🗡️ VS SPEED 👨‍🔬</div>
+      <div class="card-body">
+        <p>Speed users are very tricky to play against if you have no speed. The best way to handle a speed user is to <strong>play defensive and make them come to you</strong>, then you can get combos and crits on them easier than if you go to them instead.</p>
+        <div class="tip-box" style="margin-top:0.75rem;"><strong>💡 Play carefully against a speed user!</strong></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PING ===== -->
+<section class="section" id="ping">
+  <div class="section-header">
+    <span class="section-icon">✅</span>
+    <h2 class="section-title">Ping</h2>
+  </div>
+
+  <div class="ping-grid">
+    <div class="ping-card low">
+      <div class="ping-header">⚡ LOW PING</div>
+      <div class="ping-body">
+        <p><strong>Control:</strong> You have a lot more control — can get stuff done with better timing and pull off smooth combos. You also <strong>get comboed more easily</strong>.</p>
+        <p style="margin-top:0.75rem;"><strong>Benefits:</strong> Benefits good players more since good players mix up a lot of different techniques that would be unusable with high ping. Good players don't miss many hits and have good timing so it's harder to combo them anyway. Therefore good players will perform better the lower ping they have.</p>
+      </div>
+    </div>
+    <div class="ping-card high">
+      <div class="ping-header">🐌 HIGH PING</div>
+      <div class="ping-body">
+        <p><strong>Control:</strong> You have a lot less control — harder to land hits, worse timing. Delayed KB also makes it harder to aim on you or combo you and limits you to only certain techniques since most simply won't work with high ping.</p>
+        <p style="margin-top:0.75rem;"><strong>Benefits:</strong> Benefits worse players more since it allows you to get away with missing hits and not get punished. Also allows you to perform well while having bad PvP knowledge or doing things incorrectly. Bad players will be a lot better with high ping.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="tip-box" style="margin:1.5rem 0;">
+    <strong>📏 Fair Ping Range:</strong> If the ping is between <strong>1–100ms</strong>, the fights are almost completely fair. From 100+ it starts becoming awkward.
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">📈 HOW TO USE LAG</div>
+      <div class="card-body">
+        <p>As you move with lag, your character model and hitbox have delay server side that makes you further in front or behind than you are on your own screen. This is how <strong>"lag reach"</strong> is created.</p>
+        <p style="margin-top:0.75rem;">When playing with <strong>100+ ms</strong>, spamming crits and using S-tap combos is the most effective way to play. S-tap combos are easily done in high ping and they abuse ping reach. Crits are easily abusable as you take low KB, delayed KB, or teleport.</p>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">📉 HOW TO FIGHT LAG</div>
+      <div class="card-body">
+        <p>The best thing you could do is try to <strong>adjust your timing to their delay</strong>.</p>
+        <p style="margin-top:0.75rem;">Also, it's a lot more crucial to <strong>not miss first hits</strong> VS a lagger — you can get punished a lot harder than you normally would.</p>
+        <p style="margin-top:0.75rem;">Lastly, trying to <strong>win trades</strong> is more consistent VS laggers than trying to stun them.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FLASHCARDS ===== -->
+<section class="section" id="flashcards">
+  <div class="section-header">
+    <span class="section-icon">🃏</span>
+    <h2 class="section-title">Technique Flashcards</h2>
+  </div>
+
+  <div class="tip-box" style="margin-bottom:1.5rem;">
+    <strong>💡 Click any card to flip it</strong> and reveal the technique details. Great for memorizing what each technique does and when to use it.
+  </div>
+
+  <div class="flashcard-grid">
+
+    <div class="flashcard" onclick="this.classList.toggle('flipped')">
+      <div class="flashcard-inner">
+        <div class="flashcard-front">
+          <div class="flashcard-front-icon">💨</div>
+          <div class="flashcard-front-name">SPRINTHITS</div>
+          <div class="flashcard-front-hint">What are the 3 sprint reset methods?</div>
+          <span class="flip-hint">tap to flip</span>
+        </div>
+        <div class="flashcard-back">
+          <div class="flashcard-back-title">SPRINTHITS — Stun Technique</div>
+          <div class="flashcard-back-text">
+            Reset sprint to keep delivering sprinthits that stun the opponent by reducing their range.<br><br>
+            <strong>3 Methods:</strong><br>
+            W-Taps (risky), Pausing W-Taps (better stun), S-Taps (best stun).<br><br>
+            ✅ Best: Combos<br>
+            ❌ Worst: VS Jump Reset, Hit Select
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flashcard" onclick="this.classList.toggle('flipped')">
+      <div class="flashcard-inner">
+        <div class="flashcard-front">
+          <div class="flashcard-front-icon">💥</div>
+          <div class="flashcard-front-name">STANDARD CRITS</div>
+          <div class="flashcard-front-hint">How do you perform this and what does it counter?</div>
+          <span class="flip-hint">tap to flip</span>
+        </div>
+        <div class="flashcard-back">
+          <div class="flashcard-back-title">STANDARD CRITS — Damage Technique</div>
+          <div class="flashcard-back-text">
+            Jump and hit while falling. Release W before each hit to cancel the sprinthit.<br><br>
+            Releasing W late = more range + KB reduction, less control.<br><br>
+            ✅ Best: VS Punish Crit, Double Crit<br>
+            ❌ Worst: VS Crit Deflection
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flashcard" onclick="this.classList.toggle('flipped')">
+      <div class="flashcard-inner">
+        <div class="flashcard-front">
+          <div class="flashcard-front-icon">🔄</div>
+          <div class="flashcard-front-name">CRIT DEFLECTION</div>
+          <div class="flashcard-front-hint">What does this counter and how do you do it?</div>
+          <span class="flip-hint">tap to flip</span>
+        </div>
+        <div class="flashcard-back">
+          <div class="flashcard-back-title">CRIT DEFLECTION — Knockaway</div>
+          <div class="flashcard-back-text">
+            Counter to Standard Crits / Double Crits.<br><br>
+            Sprinthit the opponent right after they land a crit on you → they get knocked away.<br><br>
+            ✅ Best: VS Standard Crits, Double Crits<br>
+            ❌ Worst: VS NoKb Crits
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flashcard" onclick="this.classList.toggle('flipped')">
+      <div class="flashcard-inner">
+        <div class="flashcard-front">
+          <div class="flashcard-front-icon">🔵</div>
+          <div class="flashcard-front-name">NOKB CRIT</div>
+          <div class="flashcard-front-hint">Counter to what? How does it work?</div>
+          <span class="flip-hint">tap to flip</span>
+        </div>
+        <div class="flashcard-back">
+          <div class="flashcard-back-title">NOKB CRIT — NoKb Technique</div>
+          <div class="flashcard-back-text">
+            Counter to Crit Deflection. After critting, hold W → wait for opponent to hit you → KB reduced → follow up with Punish Crit or Falling Sprinthit.<br><br>
+            ✅ Best: VS Crit Deflection<br>
+            ❌ Worst: VS Double Crits, S-Hold Deflection, Standard Crits
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flashcard" onclick="this.classList.toggle('flipped')">
+      <div class="flashcard-inner">
+        <div class="flashcard-front">
+          <div class="flashcard-front-icon">⚡</div>
+          <div class="flashcard-front-name">DOUBLE CRIT</div>
+          <div class="flashcard-front-hint">What does it counter and what are the conditions?</div>
+          <span class="flip-hint">tap to flip</span>
+        </div>
+        <div class="flashcard-back">
+          <div class="flashcard-back-title">DOUBLE CRIT — Damage Technique</div>
+          <div class="flashcard-back-text">
+            Counter to NoKb Crits. After getting NoKb Critted → Punish Crit → immediately jump again for Standard Crit.<br><br>
+            ONLY works if opponent goes for Punish/NoKb Crits. If they sprinthit → you get knocked away.<br><br>
+            ✅ Best: VS short range NoKb Crits<br>
+            ❌ Worst: VS Standard Crits, Crit Deflection
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flashcard" onclick="this.classList.toggle('flipped')">
+      <div class="flashcard-inner">
+        <div class="flashcard-front">
+          <div class="flashcard-front-icon">🎯</div>
+          <div class="flashcard-front-name">HIT SELECT</div>
+          <div class="flashcard-front-hint">How does this reduce your knockback?</div>
+          <span class="flip-hint">tap to flip</span>
+        </div>
+        <div class="flashcard-back">
+          <div class="flashcard-back-title">HIT SELECT — Stun / NoKb</div>
+          <div class="flashcard-back-text">
+            Let someone hit you → immediately sprinthit them back. Reduces your KB by 40% of remaining KB.<br><br>
+            Hit target as fast as possible for max KB reduction.<br><br>
+            ✅ Best: Close range, mid-trade, counters Sprinthits<br>
+            ❌ Worst: Very close range, on first hits
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flashcard" onclick="this.classList.toggle('flipped')">
+      <div class="flashcard-inner">
+        <div class="flashcard-front">
+          <div class="flashcard-front-icon">🚀</div>
+          <div class="flashcard-front-name">UPPERCUT</div>
+          <div class="flashcard-front-hint">What is the main use case for this technique?</div>
+          <span class="flip-hint">tap to flip</span>
+        </div>
+        <div class="flashcard-back">
+          <div class="flashcard-back-title">UPPERCUT — Stun Technique</div>
+          <div class="flashcard-back-text">
+            Hit opponent while jumping forward. Covers long distance quickly. Stuns opponent and can start combos.<br><br>
+            Uppercut combos = best stun of any combo method when done correctly.<br><br>
+            ✅ Best: Covering long distance quickly<br>
+            ❌ Worst: Too close to opponent
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flashcard" onclick="this.classList.toggle('flipped')">
+      <div class="flashcard-inner">
+        <div class="flashcard-front">
+          <div class="flashcard-front-icon">🌊</div>
+          <div class="flashcard-front-name">FALLING SPRINTHIT</div>
+          <div class="flashcard-front-hint">When is this most useful?</div>
+          <span class="flip-hint">tap to flip</span>
+        </div>
+        <div class="flashcard-back">
+          <div class="flashcard-back-title">FALLING SPRINTHIT — Knockaway</div>
+          <div class="flashcard-back-text">
+            Sprinthit while FALLING. Knocks opponent away.<br><br>
+            ✅ Best: After a NoKb Crit, combo extension, counter to defensive S-holders, counter to crit trades<br>
+            ❌ Worst: VS people who hold W from neutral
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flashcard" onclick="this.classList.toggle('flipped')">
+      <div class="flashcard-inner">
+        <div class="flashcard-front">
+          <div class="flashcard-front-icon">⬇️</div>
+          <div class="flashcard-front-name">S-CRITS</div>
+          <div class="flashcard-front-hint">What are the 3 ways to use this technique?</div>
+          <span class="flip-hint">tap to flip</span>
+        </div>
+        <div class="flashcard-back">
+          <div class="flashcard-back-title">S-CRITS — Spacing Technique</div>
+          <div class="flashcard-back-text">
+            Tap/hold S after critting to create distance.<br><br>
+            <strong>3 Uses:</strong> Hit Advantage tool, Combo setup, Escape tool.<br><br>
+            ✅ Best: When opponent is falling from their jump<br>
+            ❌ Worst: When opponent too close to ground (can jump again and crit you)
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flashcard" onclick="this.classList.toggle('flipped')">
+      <div class="flashcard-inner">
+        <div class="flashcard-front">
+          <div class="flashcard-front-icon">🛡️</div>
+          <div class="flashcard-front-name">S-HOLD DEFLECTION</div>
+          <div class="flashcard-front-hint">What range is this effective at?</div>
+          <span class="flip-hint">tap to flip</span>
+        </div>
+        <div class="flashcard-back">
+          <div class="flashcard-back-title">S-HOLD DEFLECTION — Stun</div>
+          <div class="flashcard-back-text">
+            Counter to mid-long range NoKb Crits. After Crit Deflection, Tap S (long range) or Hold S (mid range) to get more range. Only works defensively.<br><br>
+            ✅ Best: VS NoKb Crit at mid-long range<br>
+            ❌ Worst: VS Short Range NoKb Crit / Falling Sprinthit
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flashcard" onclick="this.classList.toggle('flipped')">
+      <div class="flashcard-inner">
+        <div class="flashcard-front">
+          <div class="flashcard-front-icon">🔀</div>
+          <div class="flashcard-front-name">REPOSITIONING</div>
+          <div class="flashcard-front-hint">What is the main goal of this technique?</div>
+          <span class="flip-hint">tap to flip</span>
+        </div>
+        <div class="flashcard-back">
+          <div class="flashcard-back-title">REPOSITIONING — Spacing</div>
+          <div class="flashcard-back-text">
+            Change position to be at optimal range for a stun hit. Usually by using S key. Can combine with other techniques (e.g. S-Crit into reposition).<br><br>
+            ✅ Best: VS NoKb Crit<br>
+            ❌ Worst: VS Sprinthits, any crits besides NoKb Crit
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flashcard" onclick="this.classList.toggle('flipped')">
+      <div class="flashcard-inner">
+        <div class="flashcard-front">
+          <div class="flashcard-front-icon">⬆️</div>
+          <div class="flashcard-front-name">JUMP RESET</div>
+          <div class="flashcard-front-hint">What are the counters to this technique?</div>
+          <span class="flip-hint">tap to flip</span>
+        </div>
+        <div class="flashcard-back">
+          <div class="flashcard-back-title">JUMP RESET — NoKb Technique</div>
+          <div class="flashcard-back-text">
+            Jump while sprinting forward exactly as someone hits you → significantly reduces KB. Requires perfect timing.<br><br>
+            Countered by: Delayed hit timing, Perfect stun hits.<br><br>
+            ✅ Best: VS Sprinthits<br>
+            ❌ Worst: VS Perfect Stun Hits / Delayed timing
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flashcard" onclick="this.classList.toggle('flipped')">
+      <div class="flashcard-inner">
+        <div class="flashcard-front">
+          <div class="flashcard-front-icon">🔨</div>
+          <div class="flashcard-front-name">PICK HIT</div>
+          <div class="flashcard-front-hint">What are the 2 effective uses of this hit?</div>
+          <span class="flip-hint">tap to flip</span>
+        </div>
+        <div class="flashcard-back">
+          <div class="flashcard-back-title">PICK HIT — Damage Technique</div>
+          <div class="flashcard-back-text">
+            Hit at under 90% charge.<br><br>
+            <strong>2 effective uses:</strong><br>
+            1. When about to go out of reach before sword is fully charged.<br>
+            2. Catch opponent at end of reach to stop their KB and stun them.<br><br>
+            Any other scenario = suboptimal
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flashcard" onclick="this.classList.toggle('flipped')">
+      <div class="flashcard-inner">
+        <div class="flashcard-front">
+          <div class="flashcard-front-icon">🌀</div>
+          <div class="flashcard-front-name">NOKB COMBO</div>
+          <div class="flashcard-front-hint">What is this and what does it counter?</div>
+          <span class="flip-hint">tap to flip</span>
+        </div>
+        <div class="flashcard-back">
+          <div class="flashcard-back-title">NOKB COMBO — NoKb Technique</div>
+          <div class="flashcard-back-text">
+            Advanced counter to Crit Deflections.<br>NoKb Crit → Jump Reset → reduces KB to nearly 0.<br><br>
+            Countered by: Changing deflection timing, Punish Crit into Deflection.<br><br>
+            ✅ Best: VS Deflection<br>
+            ❌ Worst: VS Inconsistent timing / Punish Crit into Deflection
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flashcard" onclick="this.classList.toggle('flipped')">
+      <div class="flashcard-inner">
+        <div class="flashcard-front">
+          <div class="flashcard-front-icon">🧹</div>
+          <div class="flashcard-front-name">PUNISH SWEEP</div>
+          <div class="flashcard-front-hint">What does this counter?</div>
+          <span class="flip-hint">tap to flip</span>
+        </div>
+        <div class="flashcard-back">
+          <div class="flashcard-back-title">PUNISH SWEEP — Stun</div>
+          <div class="flashcard-back-text">
+            Counter to Hit Select. Sweep → let them sprinthit you → sprinthit them back to stun.<br><br>
+            Your sweep gives less KB so they can't get enough range to stun you. Requires Hit Priority.<br><br>
+            ✅ Best: VS Hit Select<br>
+            ❌ Worst: Any other time
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flashcard" onclick="this.classList.toggle('flipped')">
+      <div class="flashcard-inner">
+        <div class="flashcard-front">
+          <div class="flashcard-front-icon">↩️</div>
+          <div class="flashcard-front-name">SIDE SWEEP</div>
+          <div class="flashcard-front-hint">Who is this most effective against?</div>
+          <span class="flip-hint">tap to flip</span>
+        </div>
+        <div class="flashcard-back">
+          <div class="flashcard-back-title">SIDE SWEEP — Escape</div>
+          <div class="flashcard-back-text">
+            Counter to aggressive rushers. Hold W into them → get hit → let go of W → hold only A or D → turn → sweep. Makes opponent completely lose aim.<br><br>
+            Only works vs low KB hits (crits) or when they stop your KB.<br><br>
+            ✅ Best: VS aggressive NoKb Crits / straightlines<br>
+            ❌ Worst: When they don't rush
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flashcard" onclick="this.classList.toggle('flipped')">
+      <div class="flashcard-inner">
+        <div class="flashcard-front">
+          <div class="flashcard-front-icon">🦆</div>
+          <div class="flashcard-front-name">CROUCH DODGE</div>
+          <div class="flashcard-front-hint">When should you use this?</div>
+          <span class="flip-hint">tap to flip</span>
+        </div>
+        <div class="flashcard-back">
+          <div class="flashcard-back-title">CROUCH DODGE — Escape</div>
+          <div class="flashcard-back-text">
+            Hold crouch before opponent swings → reduces hitbox size → may dodge hit.<br><br>
+            LAST RESORT ONLY. Most effective when opponent critting downward. Never rely on it as primary strategy.<br><br>
+            ✅ Best: As absolute last resort<br>
+            ❌ Worst: Any other scenario
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">⚔️ 1.9 SWORD PvP GUIDE</div>
+  <div class="footer-text">Created by <strong>xYuvalx</strong> · Organization by <strong>iDexy</strong> · Clips & corrections by <strong>Kokichus</strong></div>
+  <div class="footer-text" style="margin-top:0.5rem;font-size:13px;">Since 2016 · The Complete Reference</div>
+</footer>
+
+<button id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">▲</button>
+
+<script>
+  // Tab switching
+  function switchTab(btn, tabId) {
+    const parent = btn.closest('.section') || document;
+    const allBtns = btn.parentElement.querySelectorAll('.tab-btn');
+    const allTabs = parent.querySelectorAll('.tab-content');
+    allBtns.forEach(b => b.classList.remove('active'));
+    allTabs.forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(tabId).classList.add('active');
+  }
+
+  // Scroll to top button
+  const scrollTopBtn = document.getElementById('scrollTop');
+  window.addEventListener('scroll', () => {
+    scrollTopBtn.style.display = window.scrollY > 500 ? 'flex' : 'none';
+  });
+
+  // Animate cards on scroll
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.opacity = '1';
+        entry.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.technique-card, .card, .component-card, .hit-card, .flashcard').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(20px)';
+    el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+    observer.observe(el);
+  });
+</script>
+
+
+<script>
+// SEARCH
+document.getElementById('siteSearch').addEventListener('input', function(){
+  const term = this.value.toLowerCase();
+  document.querySelectorAll('.technique-card, .card, .hit-card').forEach(el=>{
+    const text = el.innerText.toLowerCase();
+    el.style.display = text.includes(term) ? "" : "none";
+  });
+});
+
+// FLASHCARD FLIP
+document.querySelectorAll('.flashcard').forEach(card=>{
+  card.addEventListener('click', ()=>{
+    card.classList.toggle('flipped');
+  });
+});
+
+// TRAINING MODE
+function startTrainingMode(){
+  const cards = [...document.querySelectorAll('.flashcard')];
+  if(cards.length===0){
+    alert("Scroll to flashcards section first!");
+    return;
+  }
+  let index = 0;
+  alert("Training Mode: Click through flashcards to test yourself!");
+  cards[index].scrollIntoView({behavior:"smooth"});
+}
+</script>
+
+</body>
+</html>
